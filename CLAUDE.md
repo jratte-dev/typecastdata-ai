@@ -3,7 +3,7 @@
 This file provides guidance to Claude Code when working with this repository.
 
 @AGENTS.md
-
+@.claude/skills/impeccable/SKILL.md
 ## Project
 
 Typecast Data AI (typecastdata.ai) — the personal content platform and technical 
