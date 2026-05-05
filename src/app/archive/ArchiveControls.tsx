@@ -96,17 +96,17 @@ function Chips({
     ...TOPICS.map((t) => ({ id: t.id as Selection, label: t.label })),
   ];
   return (
-    <div role="tablist" aria-label="Filter by topic" className="flex flex-wrap items-center gap-2">
+    <div role="group" aria-label="Filter by topic" className="flex flex-wrap items-center gap-2">
       {items.map((item) => {
         const active = selection === item.id;
         return (
           <button
             key={item.id}
-            role="tab"
-            aria-selected={active}
+            type="button"
+            aria-pressed={active}
             onClick={() => onSelect(item.id)}
             className={[
-              "h-[32px] px-3",
+              "h-[40px] sm:h-[32px] px-3",
               "font-mono text-[11px] uppercase tracking-[0.12em]",
               "border transition-colors duration-150",
               active

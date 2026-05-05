@@ -85,11 +85,11 @@ function Masthead() {
               "
             >
               <span>№ 24</span>
-              <span aria-hidden>·</span>
+              <span aria-hidden className="text-[color:var(--paper-on-brick-dim)]">·</span>
               <span>2026</span>
-              <span aria-hidden>·</span>
+              <span aria-hidden className="text-[color:var(--paper-on-brick-dim)]">·</span>
               <span>New Orleans</span>
-              <span aria-hidden>·</span>
+              <span aria-hidden className="text-[color:var(--paper-on-brick-dim)]">·</span>
               <span>by J.R.</span>
             </div>
           </div>
@@ -197,7 +197,7 @@ function BioStrip() {
           occasionally to win an argument.
         </p>
         <p>
-          <CtaLink href="/about">More about</CtaLink>
+          <CtaLink href="/about">Read the about</CtaLink>
         </p>
       </div>
     </section>

@@ -52,8 +52,8 @@ export function ArticleHeader() {
             aria-label="Site"
             data-thin={thin || undefined}
             className="
-              font-mono text-[13px] uppercase tracking-[0.08em]
-              hidden sm:flex items-center gap-7
+              font-mono text-[12px] sm:text-[13px] uppercase tracking-[0.08em]
+              flex items-center gap-4 sm:gap-7
               opacity-100 data-[thin]:opacity-0
               data-[thin]:pointer-events-none
               transition-opacity duration-200 ease-out
@@ -63,18 +63,19 @@ export function ArticleHeader() {
             }}
           >
             {[
-              { label: "Archive", href: "#" },
-              { label: "About", href: "#" },
-              { label: "Feed", href: "#" },
+              { label: "Archive", href: "/archive", mobile: true },
+              { label: "About", href: "/about", mobile: true },
+              { label: "Feed", href: "/feed.xml", mobile: false },
             ].map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                className="
-                  text-[color:var(--ink-muted)]
-                  transition-colors duration-150
-                  hover:text-[color:var(--brick-deep)]
-                "
+                className={[
+                  "text-[color:var(--ink-muted)]",
+                  "transition-colors duration-150",
+                  "hover:text-[color:var(--brick-deep)]",
+                  item.mobile ? "" : "hidden sm:inline",
+                ].join(" ")}
               >
                 {item.label}
               </a>

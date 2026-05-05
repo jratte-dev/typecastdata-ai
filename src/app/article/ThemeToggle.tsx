@@ -43,7 +43,7 @@ export function ThemeToggle({ tone = "ink" }: { tone?: Tone }) {
       className={[
         "inline-flex items-stretch",
         "font-mono text-[11px] uppercase tracking-[0.1em]",
-        "border h-[32px]",
+        "border h-[40px] sm:h-[32px]",
         borderClass,
       ].join(" ")}
     >

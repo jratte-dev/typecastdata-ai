@@ -84,11 +84,11 @@ function AboutMasthead() {
           "
         >
           <span>№ 24</span>
-          <span aria-hidden>·</span>
+          <span aria-hidden className="text-[color:var(--paper-on-brick-dim)]">·</span>
           <span>2026</span>
-          <span aria-hidden>·</span>
+          <span aria-hidden className="text-[color:var(--paper-on-brick-dim)]">·</span>
           <span>New Orleans</span>
-          <span aria-hidden>·</span>
+          <span aria-hidden className="text-[color:var(--paper-on-brick-dim)]">·</span>
           <span>by J.R.</span>
         </div>
       </div>
@@ -205,35 +205,39 @@ function ContactList() {
   ];
   return (
     <ul className="divide-y divide-[color:var(--hairline)] border-t border-[color:var(--hairline)]">
-      {rows.map((row) => (
-        <li key={row.label}>
-          <a
-            href={row.href}
-            target={row.href.startsWith("http") ? "_blank" : undefined}
-            rel={row.href.startsWith("http") ? "noopener noreferrer" : undefined}
-            className="
-              grid grid-cols-[8rem_1fr] gap-6 items-baseline
-              py-4 group
-              transition-colors duration-150
-            "
-          >
-            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--ink-muted)]">
-              {row.label}
-            </span>
-            <span
-              className={[
-                "text-[16px] sm:text-[17px] leading-[1.4]",
-                row.muted
-                  ? "text-[color:var(--ink-muted)] opacity-70"
-                  : "text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)]",
-                "transition-colors duration-150",
-              ].join(" ")}
-            >
-              {row.value}
-            </span>
-          </a>
-        </li>
-      ))}
+      {rows.map((row) => {
+        const labelCls =
+          "font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--ink-muted)]";
+        const wrapperCls =
+          "grid grid-cols-[8rem_1fr] gap-6 items-baseline py-4 group transition-colors duration-150";
+        const valueCls = [
+          "text-[16px] sm:text-[17px] leading-[1.4]",
+          row.muted
+            ? "text-[color:var(--ink-muted)] opacity-70"
+            : "text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)]",
+          "transition-colors duration-150",
+        ].join(" ");
+        return (
+          <li key={row.label}>
+            {row.muted ? (
+              <span aria-disabled="true" className={`${wrapperCls} cursor-not-allowed`}>
+                <span className={labelCls}>{row.label}</span>
+                <span className={valueCls}>{row.value}</span>
+              </span>
+            ) : (
+              <a
+                href={row.href}
+                target={row.href.startsWith("http") ? "_blank" : undefined}
+                rel={row.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                className={wrapperCls}
+              >
+                <span className={labelCls}>{row.label}</span>
+                <span className={valueCls}>{row.value}</span>
+              </a>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -71,22 +71,23 @@ function NotFoundHeader() {
         <div className="flex items-center gap-6 sm:gap-8">
           <nav
             aria-label="Site"
-            className="font-mono text-[13px] uppercase tracking-[0.08em] hidden sm:flex items-center gap-7"
+            className="font-mono text-[12px] sm:text-[13px] uppercase tracking-[0.08em] flex items-center gap-4 sm:gap-7"
           >
             {[
-              { label: "Home", href: "/" },
-              { label: "Archive", href: "/archive" },
-              { label: "About", href: "/about" },
-              { label: "Feed", href: "/feed.xml" },
+              { label: "Home", href: "/", mobile: true },
+              { label: "Archive", href: "/archive", mobile: true },
+              { label: "About", href: "/about", mobile: true },
+              { label: "Feed", href: "/feed.xml", mobile: false },
             ].map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                className="
-                  text-[color:var(--ink-muted)]
-                  transition-colors duration-150
-                  hover:text-[color:var(--brick-deep)]
-                "
+                className={[
+                  "text-[color:var(--ink-muted)]",
+                  "transition-colors duration-150",
+                  "hover:text-[color:var(--brick-deep)]",
+                  item.mobile ? "" : "hidden sm:inline",
+                ].join(" ")}
               >
                 {item.label}
               </a>

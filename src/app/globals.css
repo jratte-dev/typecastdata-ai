@@ -71,7 +71,12 @@ html[data-theme="dark"] {
   --brick-band:           oklch(58% 0.165 32);
   --brick-band-deep:      oklch(48% 0.16 28);
   --paper-on-brick:       oklch(96% 0.018 80);
-  --paper-on-brick-muted: oklch(86% 0.025 75);
+  /* Lifted to L96 to clear WCAG AA 4.5:1 against the brick band at 11–13px.
+     This collapses visually toward --paper-on-brick on purpose: on a drenched
+     identity surface, "muted" should still be legible. Decorative-only marks
+     (aria-hidden dot separators, etc.) use --paper-on-brick-dim. */
+  --paper-on-brick-muted: oklch(96% 0.02 78);
+  --paper-on-brick-dim:   oklch(86% 0.025 75);
   --hairline-on-brick:    oklch(70% 0.06 35);
 }
 

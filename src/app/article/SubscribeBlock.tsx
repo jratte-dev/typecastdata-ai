@@ -87,15 +87,16 @@ export function SubscribeBlock() {
       <div
         id="subscribe-form"
         aria-hidden={!open}
-        className="grid mt-4"
+        inert={!open}
+        className="overflow-hidden mt-4"
         style={{
-          gridTemplateRows: open ? "1fr" : "0fr",
+          maxHeight: open ? "320px" : "0px",
           opacity: open ? 1 : 0,
           transition:
-            "grid-template-rows 200ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms cubic-bezier(0.22, 1, 0.36, 1)",
+            "max-height 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
-        <div className="overflow-hidden">
+        <div>
           {succeeded ? (
             <p
               role="status"
@@ -151,7 +152,7 @@ export function SubscribeBlock() {
                   font-mono text-[13px] uppercase tracking-[0.08em]
                   text-[color:var(--ink)]
                   border border-[color:var(--ink)]
-                  px-5 py-2 h-[40px]
+                  px-5 py-2 h-[44px] sm:h-[40px]
                   transition-colors duration-150
                   hover:bg-[color:var(--ink)] hover:text-[color:var(--paper)]
                   disabled:opacity-50 disabled:cursor-not-allowed

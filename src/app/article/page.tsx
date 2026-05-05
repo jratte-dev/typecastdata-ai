@@ -96,7 +96,7 @@ function SectionsToc() {
       <h2 className="font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--ink-muted)] mb-3">
         In this post
       </h2>
-      <ol className="flex flex-col">
+      <ol className="flex flex-col border-b border-[color:var(--hairline)]">
         {sections.map((s, i) => (
           <li key={s.id} className="border-t border-[color:var(--hairline)]">
             <a
@@ -116,7 +116,6 @@ function SectionsToc() {
             </a>
           </li>
         ))}
-        <li className="border-t border-[color:var(--hairline)]" />
       </ol>
     </nav>
   );
@@ -452,7 +451,7 @@ function CodeBlock({
           </span>
           <span
             aria-hidden
-            className="font-mono text-[11px] tracking-[0.12em] text-[color:var(--hairline)]"
+            className="font-mono text-[11px] tracking-[0.12em] text-[color:var(--ink-muted)] opacity-70"
           >
             {String(lines.length).padStart(2, "0")} lines
           </span>
@@ -744,33 +743,61 @@ function Footnotes() {
  * -------------------------------------------------------------- */
 
 function PrevNext() {
+  const items: { dir: "prev" | "next"; href: string; title: string }[] = [
+    {
+      dir: "prev",
+      href: "#",
+      title: "The dbt project that ate a quarter, and what we learned the second time",
+    },
+    {
+      dir: "next",
+      href: "#",
+      title: "Stop using vector search for things that are not search",
+    },
+  ];
   return (
     <nav
       aria-label="Adjacent posts"
       className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-10 border-t border-[color:var(--hairline)] pt-10"
     >
-      <a
-        href="#"
-        className="group flex flex-col gap-2 transition-colors duration-150"
-      >
-        <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--ink-muted)]">
-          ← Previous
-        </span>
-        <span className="text-[19px] leading-[1.3] text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)] transition-colors duration-150">
-          The dbt project that ate a quarter, and what we learned the second time
-        </span>
-      </a>
-      <a
-        href="#"
-        className="group flex flex-col gap-2 sm:text-right transition-colors duration-150"
-      >
-        <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--ink-muted)]">
-          Next →
-        </span>
-        <span className="text-[19px] leading-[1.3] text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)] transition-colors duration-150">
-          Stop using vector search for things that are not search
-        </span>
-      </a>
+      {items.map((it) => {
+        const isStub = it.href === "#";
+        const align = it.dir === "next" ? "sm:text-right" : "";
+        const labelCls =
+          "font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--ink-muted)]";
+        const titleCls = [
+          "text-[19px] leading-[1.3] transition-colors duration-150",
+          isStub
+            ? "text-[color:var(--ink-muted)] opacity-70"
+            : "text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)]",
+        ].join(" ");
+        const inner = (
+          <>
+            <span className={labelCls}>
+              {it.dir === "prev" ? "← Previous" : "Next →"}
+              {isStub ? " · soon" : ""}
+            </span>
+            <span className={titleCls}>{it.title}</span>
+          </>
+        );
+        const wrapperCls = [
+          "group flex flex-col gap-2 transition-colors duration-150",
+          align,
+        ].join(" ");
+        return isStub ? (
+          <span
+            key={it.dir}
+            aria-disabled="true"
+            className={`${wrapperCls} cursor-not-allowed`}
+          >
+            {inner}
+          </span>
+        ) : (
+          <a key={it.dir} href={it.href} className={wrapperCls}>
+            {inner}
+          </a>
+        );
+      })}
     </nav>
   );
 }
@@ -808,21 +835,26 @@ function RelatedPosts() {
       <ul className="divide-y divide-[color:var(--hairline)]">
         {items.map((it) => (
           <li key={it.title}>
-            <a
-              href="#"
+            <span
+              aria-disabled="true"
               className="
                 grid grid-cols-[1fr_auto] gap-6 items-baseline
-                py-4 group
-                transition-colors duration-150
+                py-4 cursor-not-allowed
               "
             >
-              <span className="text-[17px] leading-[1.4] text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)] transition-colors duration-150">
-                {it.title}
+              <span className="text-[17px] leading-[1.4] text-[color:var(--ink-muted)] opacity-80 flex items-baseline gap-3 flex-wrap">
+                <span>{it.title}</span>
+                <span
+                  aria-label="Coming soon"
+                  className="font-mono text-[10px] uppercase tracking-[0.12em] opacity-70"
+                >
+                  (soon)
+                </span>
               </span>
-              <time className="font-mono text-[12px] text-[color:var(--ink-muted)] whitespace-nowrap">
+              <time className="font-mono text-[12px] text-[color:var(--ink-muted)] whitespace-nowrap opacity-80">
                 {it.date}
               </time>
-            </a>
+            </span>
           </li>
         ))}
       </ul>
