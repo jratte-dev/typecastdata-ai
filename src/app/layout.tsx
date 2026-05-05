@@ -16,8 +16,12 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://typecastdata.ai"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Typecast Data AI",
     template: "%s · Typecast Data AI",

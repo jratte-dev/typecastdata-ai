@@ -1,6 +1,8 @@
 import { POSTS } from "../posts";
 
-const SITE = "https://typecastdata.ai";
+const SITE =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 const TITLE = "Typecast Data AI";
 const DESCRIPTION =
   "John Ratté on data engineering, AI, and the gap between what gets shipped and what gets shipped well.";
