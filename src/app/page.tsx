@@ -1,65 +1,358 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { BrickNav } from "./BrickNav";
+import { SiteFooter } from "./SiteFooter";
+import { TOPICS, postsByTopic, type Post, type Topic } from "./posts";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Typecast Data AI — John Ratté",
+  description:
+    "Data engineering, AI, and the gap between what gets shipped and what gets shipped well. By John Ratté, in New Orleans.",
+};
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="bg-[color:var(--paper)] text-[color:var(--ink)]">
+      <Masthead />
+
+      <main id="main">
+        <BioStrip />
+        <TopicClusters />
+        <ArchiveLink />
       </main>
+
+      <SiteFooter />
     </div>
+  );
+}
+
+/* -------------------------------------------------------------- *
+ * Masthead — drenched Quarter Brick band, identity-first
+ *
+ * Tokens used here (--brick-band, --paper-on-brick, ...) are
+ * theme-stable: this band stays Quarter Brick across light and
+ * dark modes. Identity is not chrome.
+ * -------------------------------------------------------------- */
+
+function Masthead() {
+  return (
+    <section
+      aria-label="Masthead"
+      className="relative bg-[color:var(--brick-band)] text-[color:var(--paper-on-brick)]"
+    >
+      <BrickNav rubric="The publication of John Ratté" />
+
+      <div className="px-6 sm:px-10 pt-10 pb-20 sm:pt-20 sm:pb-28 max-w-[88rem] mx-auto">
+        <div
+          className="
+            font-mono text-[15px] sm:text-[18px] tracking-tight
+            text-[color:var(--paper-on-brick)]
+            inline-flex items-baseline gap-[2px]
+            mb-10 sm:mb-14
+          "
+        >
+          <span>typecast</span>
+          <span aria-hidden className="text-[color:var(--paper-on-brick-muted)]">.</span>
+        </div>
+
+        <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:gap-20 items-end">
+          <div>
+            <h1
+              className="
+                font-sans font-semibold tracking-[-0.022em]
+                text-[color:var(--paper-on-brick)]
+                leading-[1.04]
+                text-[clamp(2.25rem,6vw,4.5rem)]
+                max-w-[22ch]
+              "
+            >
+              Data engineering, AI, and the gap between what gets shipped and
+              what gets shipped well.
+            </h1>
+
+            <div
+              aria-hidden
+              className="mt-10 h-px bg-[color:var(--hairline-on-brick)] max-w-[44rem]"
+            />
+
+            <div
+              className="
+                mt-5
+                font-mono text-[11px] sm:text-[12px] uppercase
+                tracking-[0.16em]
+                text-[color:var(--paper-on-brick-muted)]
+                flex flex-wrap items-baseline gap-x-4 gap-y-1
+              "
+            >
+              <span>№ 24</span>
+              <span aria-hidden>·</span>
+              <span>2026</span>
+              <span aria-hidden>·</span>
+              <span>New Orleans</span>
+              <span aria-hidden>·</span>
+              <span>by J.R.</span>
+            </div>
+          </div>
+
+          <LatestTeaser />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LatestTeaser() {
+  return (
+    <aside
+      aria-label="Latest post"
+      className="lg:max-w-[28ch] lg:text-right lg:justify-self-end"
+    >
+      <div
+        className="
+          font-mono text-[11px] uppercase tracking-[0.16em]
+          text-[color:var(--paper-on-brick-muted)]
+          mb-3
+        "
+      >
+        Latest
+      </div>
+      <p className="text-[17px] sm:text-[18px] leading-[1.45] text-[color:var(--paper-on-brick)]">
+        Why your warehouse, fifteen years older and a tenth as fashionable,
+        keeps beating your serving stack at the only metric the user actually
+        sees.
+      </p>
+      <div className="mt-4 lg:flex lg:justify-end">
+        <CtaLink href="/article" tone="brick">
+          Read it
+        </CtaLink>
+      </div>
+    </aside>
+  );
+}
+
+/* -------------------------------------------------------------- *
+ * CtaLink — the single CTA primitive.
+ *
+ * Mono uppercase, hairline underline at rest, accent on hover.
+ * tone="ink"   — for paper surfaces. accent: brick-deep.
+ * tone="brick" — for paper-on-brick surfaces inside the masthead.
+ * -------------------------------------------------------------- */
+
+function CtaLink({
+  href,
+  tone = "ink",
+  children,
+}: {
+  href: string;
+  tone?: "ink" | "brick";
+  children: React.ReactNode;
+}) {
+  const cls =
+    tone === "brick"
+      ? "text-[color:var(--paper-on-brick)] decoration-[color:var(--hairline-on-brick)] hover:decoration-[color:var(--paper-on-brick)] hover:[text-decoration-thickness:2px]"
+      : "text-[color:var(--ink)] decoration-[color:var(--hairline)] hover:text-[color:var(--brick-deep)] hover:decoration-[color:var(--brick)] hover:[text-decoration-thickness:2px]";
+  return (
+    <Link
+      href={href}
+      className={[
+        "inline-flex items-center gap-2",
+        "font-mono text-[12px] uppercase tracking-[0.12em]",
+        "underline decoration-1 underline-offset-[5px]",
+        "transition-[color,text-decoration-color,text-decoration-thickness] duration-150",
+        cls,
+      ].join(" ")}
+    >
+      <span>{children}</span>
+      <span aria-hidden>→</span>
+    </Link>
+  );
+}
+
+/* -------------------------------------------------------------- *
+ * Bio strip — quietly factual, photo placeholder until supplied
+ * -------------------------------------------------------------- */
+
+function BioStrip() {
+  return (
+    <section
+      aria-labelledby="bio-heading"
+      className="px-6 sm:px-10 max-w-[88rem] mx-auto pt-20 sm:pt-28 pb-16 sm:pb-24"
+    >
+      <h2
+        id="bio-heading"
+        className="font-mono text-[12px] uppercase tracking-[0.16em] text-[color:var(--ink-muted)] mb-8"
+      >
+        Who
+      </h2>
+
+      <div className="space-y-6 text-[18px] sm:text-[19px] leading-[1.6] max-w-[60ch]">
+        <p>
+          John Ratté has spent twenty years building data systems for
+          companies that mostly did not deserve them. He works in New
+          Orleans, currently on AI-shaped problems for clients who would
+          rather not have AI-shaped problems.
+        </p>
+        <p>
+          This site is where he writes about it. Mostly to clear his head,
+          occasionally to win an argument.
+        </p>
+        <p>
+          <CtaLink href="/about">More about</CtaLink>
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------- *
+ * Topic clusters — four doors into the writing
+ * -------------------------------------------------------------- */
+
+function TopicClusters() {
+  return (
+    <section
+      aria-labelledby="topics-heading"
+      className="px-6 sm:px-10 max-w-[88rem] mx-auto pb-20 sm:pb-28 border-t border-[color:var(--hairline)] pt-16 sm:pt-24"
+    >
+      <h2
+        id="topics-heading"
+        className="font-mono text-[12px] uppercase tracking-[0.16em] text-[color:var(--ink-muted)] mb-12"
+      >
+        What
+      </h2>
+
+      <div className="grid gap-x-16 gap-y-16 lg:grid-cols-2">
+        {TOPICS.map((meta) => (
+          <ClusterPanel
+            key={meta.id}
+            topic={meta.id}
+            name={meta.name}
+            dek={meta.dek}
+            posts={postsByTopic(meta.id, 3)}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ClusterPanel({
+  name,
+  dek,
+  posts,
+}: {
+  topic: Topic;
+  name: string;
+  dek: string;
+  posts: Post[];
+}) {
+  return (
+    <div>
+      <h3
+        className="
+          font-sans font-medium tracking-[-0.012em]
+          text-[26px] sm:text-[28px] leading-[1.15]
+          text-[color:var(--ink)]
+        "
+      >
+        {name}
+      </h3>
+      <p className="mt-2 text-[16px] sm:text-[17px] leading-[1.5] text-[color:var(--ink-muted)] max-w-[52ch]">
+        {dek}
+      </p>
+
+      <ul className="mt-6 divide-y divide-[color:var(--hairline)] border-t border-[color:var(--hairline)]">
+        {posts.map((post) => {
+          const isStub = post.href === "#";
+          const rowCls = [
+            "grid grid-cols-[1fr_auto] gap-6 items-baseline",
+            "py-4 group transition-colors duration-150",
+            isStub ? "cursor-not-allowed" : "",
+          ].join(" ");
+          const titleCls = [
+            "text-[17px] leading-[1.4] transition-colors duration-150",
+            "flex items-baseline gap-3 flex-wrap",
+            isStub
+              ? "text-[color:var(--ink-muted)] opacity-70"
+              : "text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)]",
+          ].join(" ");
+          const timeCls = [
+            "font-mono text-[12px] whitespace-nowrap",
+            isStub
+              ? "text-[color:var(--ink-muted)] opacity-60"
+              : "text-[color:var(--ink-muted)]",
+          ].join(" ");
+          const inner = (
+            <>
+              <span className={titleCls}>
+                <span>{post.title}</span>
+                {isStub ? (
+                  <span
+                    aria-label="Coming soon"
+                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-[color:var(--ink-muted)] opacity-70"
+                  >
+                    (soon)
+                  </span>
+                ) : null}
+              </span>
+              <time dateTime={post.isoDate} className={timeCls}>
+                {post.date}
+              </time>
+            </>
+          );
+          return (
+            <li key={post.slug}>
+              {isStub ? (
+                <span aria-disabled="true" className={rowCls}>
+                  {inner}
+                </span>
+              ) : (
+                <a href={post.href} className={rowCls}>
+                  {inner}
+                </a>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------- *
+ * Archive link — quiet end-of-page CTA
+ * -------------------------------------------------------------- */
+
+function ArchiveLink() {
+  return (
+    <section
+      id="archive"
+      aria-label="Archive"
+      className="border-t border-[color:var(--hairline)]"
+    >
+      <Link
+        href="/archive"
+        className="
+          group
+          mx-auto max-w-[88rem] px-6 sm:px-10 py-10
+          font-mono text-[14px] sm:text-[15px] uppercase tracking-[0.12em]
+          text-[color:var(--ink)]
+          flex items-center justify-between
+          transition-colors duration-150
+          hover:text-[color:var(--brick-deep)]
+        "
+      >
+        <span className="underline decoration-[color:var(--hairline)] decoration-1 underline-offset-[6px] group-hover:decoration-[color:var(--brick)] group-hover:[text-decoration-thickness:2px] transition-[text-decoration-color,text-decoration-thickness] duration-150">
+          Read the archive
+        </span>
+        <span
+          aria-hidden
+          className="transition-transform duration-200 group-hover:translate-x-1"
+          style={{ transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)" }}
+        >
+          →
+        </span>
+      </Link>
+    </section>
   );
 }

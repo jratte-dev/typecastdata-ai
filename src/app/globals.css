@@ -1,26 +1,120 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans-stack), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-stack), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-hairline: var(--hairline);
+  --color-brick: var(--brick);
+  --color-brick-deep: var(--brick-deep);
+  --color-cypress: var(--cypress);
+  --color-cypress-deep: var(--cypress-deep);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ----------------------------------------------------------------- *
+ * Theme tokens
+ *
+ * The pre-paint script in layout.tsx always resolves the active
+ * theme (stored override OR system pref) into data-theme on <html>
+ * before first paint, so we never depend on the prefers-color-scheme
+ * media query directly. html[data-theme=...] selectors carry
+ * specificity (0,1,1), beating :root, so the toggle always wins.
+ * ----------------------------------------------------------------- */
+
+:root {
+  color-scheme: light;
+  --paper:        oklch(97.4% 0.014 80);
+  --paper-deep:   oklch(94.4% 0.022 78);
+  --ink:          oklch(20% 0.018 60);
+  --ink-muted:    oklch(46% 0.014 60);
+  --hairline:     oklch(82% 0.014 70);
+  --brick:       oklch(58% 0.165 32);
+  --brick-deep:  oklch(48% 0.16 28);
+  --cypress:      oklch(52% 0.058 195);
+  --cypress-deep: oklch(42% 0.06 195);
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --paper:        oklch(97.4% 0.014 80);
+  --paper-deep:   oklch(94.4% 0.022 78);
+  --ink:          oklch(20% 0.018 60);
+  --ink-muted:    oklch(46% 0.014 60);
+  --hairline:     oklch(82% 0.014 70);
+  --brick:       oklch(58% 0.165 32);
+  --brick-deep:  oklch(48% 0.16 28);
+  --cypress:      oklch(52% 0.058 195);
+  --cypress-deep: oklch(42% 0.06 195);
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:        oklch(16% 0.013 60);
+  --paper-deep:   oklch(20% 0.018 65);
+  --ink:          oklch(92% 0.014 80);
+  --ink-muted:    oklch(66% 0.014 72);
+  --hairline:     oklch(32% 0.016 65);
+  --brick:       oklch(70% 0.175 35);
+  --brick-deep:  oklch(78% 0.16 38);
+  --cypress:      oklch(64% 0.068 195);
+  --cypress-deep: oklch(74% 0.07 195);
+}
+
+/* Fixed brick-band identity tokens. These do NOT swap with theme;
+   the masthead is identity, not chrome, and stays Quarter Brick
+   across light and dark modes. */
+:root {
+  --brick-band:           oklch(58% 0.165 32);
+  --brick-band-deep:      oklch(48% 0.16 28);
+  --paper-on-brick:       oklch(96% 0.018 80);
+  --paper-on-brick-muted: oklch(86% 0.025 75);
+  --hairline-on-brick:    oklch(70% 0.06 35);
+}
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--brick);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brick);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+@media print {
+  :root { --paper: #fff; --ink: #111; }
+  .no-print { display: none !important; }
+  article { max-width: none !important; }
+  /* Flatten the brick band on print so a printed page does not burn ink. */
+  [aria-label$="masthead" i],
+  [aria-label="Masthead" i] {
+    background: #fff !important;
+    color: #111 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
