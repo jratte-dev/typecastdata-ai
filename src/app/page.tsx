@@ -187,10 +187,13 @@ function BioStrip() {
 
       <div className="space-y-6 text-[18px] sm:text-[19px] leading-[1.6] max-w-[60ch]">
         <p>
-          John Ratté has spent twenty years building data systems for
-          companies that mostly did not deserve them. He works in New
-          Orleans, currently on AI-shaped problems for clients who would
-          rather not have AI-shaped problems.
+          John has spent the last 20 years building data and analytics
+          solutions, including some of the most elaborate data
+          visualizations ever exported to Excel. With a new focus on
+          AI-centric development to deliver a wider range of custom
+          solutions, he currently resides and works in New Orleans
+          continuing his search for truth, happiness, and a po-boy
+          restaurant that is open on Mondays.
         </p>
         <p>
           This site is where he writes about it. Mostly to clear his head,
