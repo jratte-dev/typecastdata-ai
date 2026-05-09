@@ -66,11 +66,10 @@ function Masthead() {
                 max-w-[22ch]
               "
             >
-              Data&
-              AI&
-              Analytics& 
+              Data&<br />
+              AI&<br />
+              Analytics&<br />
               Can this export to Excel?
-
             </h1>
 
             <div
