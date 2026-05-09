@@ -1,23 +1,26 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { POSTS, TOPICS, topicMeta, type Post, type Topic } from "../posts";
+import Link from "next/link";
+import { TOPICS, topicMeta, type Topic } from "@/lib/content/topics";
+import { formatDate } from "@/lib/content/format";
+import type { Article } from "@/lib/content/types";
 
 type Selection = "all" | Topic;
 
-export function ArchiveControls() {
+export function ArchiveControls({ articles }: { articles: Article[] }) {
   const [selection, setSelection] = useState<Selection>("all");
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return POSTS.filter((p) => {
-      if (selection !== "all" && p.topic !== selection) return false;
-      if (q && !p.title.toLowerCase().includes(q)) return false;
+    return articles.filter((a) => {
+      if (selection !== "all" && a.topic !== selection) return false;
+      if (q && !a.title.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [selection, query]);
+  }, [articles, selection, query]);
 
   return (
     <>
@@ -28,12 +31,17 @@ export function ArchiveControls() {
         onQuery={setQuery}
         inputRef={inputRef}
         resultCount={filtered.length}
+        total={articles.length}
       />
-      <PostList posts={filtered} onClear={() => {
-        setSelection("all");
-        setQuery("");
-        requestAnimationFrame(() => inputRef.current?.focus());
-      }} />
+      <ArticleList
+        articles={filtered}
+        total={articles.length}
+        onClear={() => {
+          setSelection("all");
+          setQuery("");
+          requestAnimationFrame(() => inputRef.current?.focus());
+        }}
+      />
     </>
   );
 }
@@ -49,6 +57,7 @@ function FilterStrip({
   onQuery,
   inputRef,
   resultCount,
+  total,
 }: {
   selection: Selection;
   onSelect: (s: Selection) => void;
@@ -56,6 +65,7 @@ function FilterStrip({
   onQuery: (q: string) => void;
   inputRef: React.RefObject<HTMLInputElement | null>;
   resultCount: number;
+  total: number;
 }) {
   return (
     <div
@@ -78,6 +88,7 @@ function FilterStrip({
           onQuery={onQuery}
           inputRef={inputRef}
           resultCount={resultCount}
+          total={total}
         />
       </div>
     </div>
@@ -127,11 +138,13 @@ function SearchInput({
   onQuery,
   inputRef,
   resultCount,
+  total,
 }: {
   query: string;
   onQuery: (q: string) => void;
   inputRef: React.RefObject<HTMLInputElement | null>;
   resultCount: number;
+  total: number;
 }) {
   return (
     <div className="sm:ml-auto flex items-baseline gap-3 w-full sm:w-auto">
@@ -162,18 +175,36 @@ function SearchInput({
         aria-live="polite"
         className="font-mono text-[11px] text-[color:var(--ink-muted)] tabular-nums whitespace-nowrap"
       >
-        {resultCount === POSTS.length ? "" : `${resultCount}/${POSTS.length}`}
+        {resultCount === total ? "" : `${resultCount}/${total}`}
       </span>
     </div>
   );
 }
 
 /* -------------------------------------------------------------- *
- * Post list
+ * Article list
  * -------------------------------------------------------------- */
 
-function PostList({ posts, onClear }: { posts: Post[]; onClear: () => void }) {
-  if (posts.length === 0) {
+function ArticleList({
+  articles,
+  total,
+  onClear,
+}: {
+  articles: Article[];
+  total: number;
+  onClear: () => void;
+}) {
+  if (total === 0) {
+    return (
+      <div className="mx-auto max-w-[88rem] px-6 sm:px-10 py-20">
+        <p className="text-[17px] leading-[1.5] text-[color:var(--ink-muted)] max-w-[60ch]">
+          No published articles yet. The first one lands when it lands.
+        </p>
+      </div>
+    );
+  }
+
+  if (articles.length === 0) {
     return (
       <div className="mx-auto max-w-[88rem] px-6 sm:px-10 py-20">
         <p className="text-[17px] leading-[1.5] text-[color:var(--ink-muted)] max-w-[60ch]">
@@ -200,80 +231,43 @@ function PostList({ posts, onClear }: { posts: Post[]; onClear: () => void }) {
 
   return (
     <ol className="mx-auto max-w-[88rem] px-6 sm:px-10 pb-20">
-      {posts.map((post) => {
-        const isStub = post.href === "#";
-        return (
-          <li
-            key={post.slug}
-            className="border-b border-[color:var(--hairline)] first:border-t"
+      {articles.map((article) => (
+        <li
+          key={article.slug}
+          className="border-b border-[color:var(--hairline)] first:border-t"
+        >
+          <Link
+            href={article.href}
+            className="
+              grid grid-cols-[8ch_1fr] sm:grid-cols-[10ch_1fr_auto] gap-3 sm:gap-6
+              items-baseline py-5 sm:py-6 group
+              transition-colors duration-150
+            "
           >
-            <a
-              href={post.href}
-              aria-disabled={isStub || undefined}
-              tabIndex={isStub ? -1 : undefined}
-              onClick={isStub ? (e) => e.preventDefault() : undefined}
-              className={[
-                "grid grid-cols-[8ch_1fr] sm:grid-cols-[10ch_1fr_auto] gap-3 sm:gap-6",
-                "items-baseline py-5 sm:py-6 group",
-                "transition-colors duration-150",
-                isStub ? "cursor-not-allowed" : "",
-              ].join(" ")}
+            <time
+              dateTime={article.date}
+              className="font-mono text-[12px] tabular-nums whitespace-nowrap text-[color:var(--ink-muted)]"
             >
-              <time
-                dateTime={post.isoDate}
-                className={[
-                  "font-mono text-[12px] tabular-nums whitespace-nowrap",
-                  isStub
-                    ? "text-[color:var(--ink-muted)] opacity-60"
-                    : "text-[color:var(--ink-muted)]",
-                ].join(" ")}
-              >
-                {post.date}
-              </time>
-              <span
-                className={[
-                  "text-[17px] sm:text-[18px] leading-[1.4] transition-colors duration-150",
-                  "col-span-2 sm:col-span-1 flex items-baseline gap-3 flex-wrap",
-                  isStub
-                    ? "text-[color:var(--ink-muted)] opacity-70"
-                    : "text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)]",
-                ].join(" ")}
-              >
-                {post.isNew ? (
-                  <span
-                    aria-label="New post"
-                    className="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--cypress-deep)] mr-[-0.25rem]"
-                  >
-                    new ·
-                  </span>
-                ) : null}
-                <span>{post.title}</span>
-                {isStub ? (
-                  <span
-                    aria-label="Coming soon"
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-[color:var(--ink-muted)] opacity-70"
-                  >
-                    (soon)
-                  </span>
-                ) : null}
-              </span>
-              <span
-                className={[
-                  "hidden sm:inline-flex",
-                  "font-mono text-[10px] uppercase tracking-[0.12em]",
-                  "text-[color:var(--cypress-deep)]",
-                  "border border-[color:var(--cypress)]",
-                  "px-1.5 py-0.5 leading-none",
-                  "whitespace-nowrap",
-                  isStub ? "opacity-60" : "",
-                ].join(" ")}
-              >
-                {topicMeta(post.topic).label}
-              </span>
-            </a>
-          </li>
-        );
-      })}
+              {formatDate(article.date)}
+            </time>
+            <span className="text-[17px] sm:text-[18px] leading-[1.4] transition-colors duration-150 col-span-2 sm:col-span-1 flex items-baseline gap-3 flex-wrap text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)]">
+              <span>{article.title}</span>
+            </span>
+            <span
+              className="
+                hidden sm:inline-flex
+                font-mono text-[10px] uppercase tracking-[0.12em]
+                text-[color:var(--cypress-deep)]
+                border border-[color:var(--cypress)]
+                px-1.5 py-0.5 leading-none
+                whitespace-nowrap
+              "
+            >
+              {topicMeta(article.topic).label}
+            </span>
+          </Link>
+        </li>
+      ))}
     </ol>
   );
 }
