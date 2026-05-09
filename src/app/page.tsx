@@ -66,8 +66,7 @@ function Masthead() {
                 max-w-[22ch]
               "
             >
-              Data engineering, AI, and the gap between what gets shipped and
-              what gets shipped well.
+              Data, AI, and all the king's buzzwords and all the king's men.
             </h1>
 
             <div
