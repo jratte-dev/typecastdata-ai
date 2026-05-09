@@ -66,7 +66,11 @@ function Masthead() {
                 max-w-[22ch]
               "
             >
-              Data, AI, and all the king's buzzwords and all the king's men.
+              Data&
+              AI&
+              Analytics& 
+              Can this export to Excel?
+
             </h1>
 
             <div
