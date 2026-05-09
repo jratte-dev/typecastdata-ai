@@ -195,10 +195,20 @@ function BioStrip() {
           continuing his search for truth, happiness, and a po-boy
           restaurant that is open on Mondays.
         </p>
-        <p>
-          This site is where he writes about it. Mostly to clear his head,
-          occasionally to win an argument.
-        </p>
+        <figure className="relative my-10 pl-10 sm:pl-14">
+          <span
+            aria-hidden
+            className="absolute left-0 top-[-0.35em] text-[5rem] sm:text-[6rem] leading-none italic text-[color:var(--ink-muted)] select-none"
+          >
+            &ldquo;
+          </span>
+          <blockquote className="font-serif italic text-[24px] sm:text-[28px] leading-[1.35] text-[color:var(--ink)]">
+            It&rsquo;s like a podcast you can read!
+          </blockquote>
+          <figcaption className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink-muted)]">
+            Overheard, coffee shop in the Marigny, 2025
+          </figcaption>
+        </figure>
         <p>
           <CtaLink href="/about">Read the about</CtaLink>
         </p>
