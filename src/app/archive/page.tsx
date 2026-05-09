@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { BrickNav } from "../BrickNav";
 import { SiteFooter } from "../SiteFooter";
 import { ArchiveControls } from "./ArchiveControls";
+import { getAllArticles } from "@/lib/content/articles";
 
 export const metadata: Metadata = {
   title: "Archive · Typecast Data AI",
@@ -10,12 +11,13 @@ export const metadata: Metadata = {
 };
 
 export default function ArchivePage() {
+  const articles = getAllArticles();
   return (
     <div className="bg-[color:var(--paper)] text-[color:var(--ink)]">
       <ArchiveMasthead />
 
       <main id="main">
-        <ArchiveControls />
+        <ArchiveControls articles={articles} />
       </main>
 
       <SiteFooter />

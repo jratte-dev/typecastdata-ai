@@ -1,4 +1,4 @@
-import { POSTS } from "../posts";
+import { getAllArticles } from "@/lib/content/articles";
 
 const SITE =
   process.env.NEXT_PUBLIC_SITE_URL ||
@@ -18,23 +18,21 @@ function escape(s: string): string {
 }
 
 export function GET() {
-  // RSS only carries posts that actually exist. Stubs (href === "#") are
-  // hidden until real article routes ship.
-  const live = POSTS.filter((p) => p.href !== "#");
-  const lastBuild = live.length
-    ? new Date(live[0].isoDate).toUTCString()
+  const articles = getAllArticles();
+  const lastBuild = articles.length
+    ? new Date(articles[0].date).toUTCString()
     : new Date().toUTCString();
 
-  const items = live
-    .map((p) => {
-      const link = `${SITE}${p.href}`;
+  const items = articles
+    .map((a) => {
+      const link = `${SITE}${a.href}`;
       return `    <item>
-      <title>${escape(p.title)}</title>
+      <title>${escape(a.title)}</title>
       <link>${link}</link>
       <guid isPermaLink="true">${link}</guid>
-      <pubDate>${new Date(p.isoDate).toUTCString()}</pubDate>
-      <description>${escape(p.title)}</description>
-      <category>${escape(p.topic)}</category>
+      <pubDate>${new Date(a.date).toUTCString()}</pubDate>
+      <description>${escape(a.description)}</description>
+      <category>${escape(a.topic)}</category>
     </item>`;
     })
     .join("\n");

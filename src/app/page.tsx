@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BrickNav } from "./BrickNav";
 import { SiteFooter } from "./SiteFooter";
-import { TOPICS, postsByTopic, type Post, type Topic } from "./posts";
+import {
+  getAllArticles,
+  getArticlesByTopic,
+  formatDate,
+  type Article,
+} from "@/lib/content/articles";
+import { TOPICS } from "@/lib/content/topics";
 
 export const metadata: Metadata = {
   title: "Typecast Data AI — John Ratté",
@@ -11,9 +17,12 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  const all = getAllArticles();
+  const latest = all[0] ?? null;
+
   return (
     <div className="bg-[color:var(--paper)] text-[color:var(--ink)]">
-      <Masthead />
+      <Masthead latest={latest} />
 
       <main id="main">
         <BioStrip />
@@ -28,13 +37,9 @@ export default function HomePage() {
 
 /* -------------------------------------------------------------- *
  * Masthead — drenched Quarter Brick band, identity-first
- *
- * Tokens used here (--brick-band, --paper-on-brick, ...) are
- * theme-stable: this band stays Quarter Brick across light and
- * dark modes. Identity is not chrome.
  * -------------------------------------------------------------- */
 
-function Masthead() {
+function Masthead({ latest }: { latest: Article | null }) {
   return (
     <section
       aria-label="Masthead"
@@ -96,14 +101,14 @@ function Masthead() {
             </div>
           </div>
 
-          <LatestTeaser />
+          {latest ? <LatestTeaser article={latest} /> : null}
         </div>
       </div>
     </section>
   );
 }
 
-function LatestTeaser() {
+function LatestTeaser({ article }: { article: Article }) {
   return (
     <aside
       aria-label="Latest post"
@@ -119,12 +124,10 @@ function LatestTeaser() {
         Latest
       </div>
       <p className="text-[17px] sm:text-[18px] leading-[1.45] text-[color:var(--paper-on-brick)]">
-        Why your warehouse, fifteen years older and a tenth as fashionable,
-        keeps beating your serving stack at the only metric the user actually
-        sees.
+        {article.description}
       </p>
       <div className="mt-4 lg:flex lg:justify-end">
-        <CtaLink href="/article" tone="brick">
+        <CtaLink href={article.href} tone="brick">
           Read it
         </CtaLink>
       </div>
@@ -134,10 +137,6 @@ function LatestTeaser() {
 
 /* -------------------------------------------------------------- *
  * CtaLink — the single CTA primitive.
- *
- * Mono uppercase, hairline underline at rest, accent on hover.
- * tone="ink"   — for paper surfaces. accent: brick-deep.
- * tone="brick" — for paper-on-brick surfaces inside the masthead.
  * -------------------------------------------------------------- */
 
 function CtaLink({
@@ -240,10 +239,9 @@ function TopicClusters() {
         {TOPICS.map((meta) => (
           <ClusterPanel
             key={meta.id}
-            topic={meta.id}
             name={meta.name}
             dek={meta.dek}
-            posts={postsByTopic(meta.id, 3)}
+            articles={getArticlesByTopic(meta.id, 3)}
           />
         ))}
       </div>
@@ -254,12 +252,11 @@ function TopicClusters() {
 function ClusterPanel({
   name,
   dek,
-  posts,
+  articles,
 }: {
-  topic: Topic;
   name: string;
   dek: string;
-  posts: Post[];
+  articles: Article[];
 }) {
   return (
     <div>
@@ -276,60 +273,32 @@ function ClusterPanel({
         {dek}
       </p>
 
-      <ul className="mt-6 divide-y divide-[color:var(--hairline)] border-t border-[color:var(--hairline)]">
-        {posts.map((post) => {
-          const isStub = post.href === "#";
-          const rowCls = [
-            "grid grid-cols-[1fr_auto] gap-6 items-baseline",
-            "py-4 group transition-colors duration-150",
-            isStub ? "cursor-not-allowed" : "",
-          ].join(" ");
-          const titleCls = [
-            "text-[17px] leading-[1.4] transition-colors duration-150",
-            "flex items-baseline gap-3 flex-wrap",
-            isStub
-              ? "text-[color:var(--ink-muted)] opacity-70"
-              : "text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)]",
-          ].join(" ");
-          const timeCls = [
-            "font-mono text-[12px] whitespace-nowrap",
-            isStub
-              ? "text-[color:var(--ink-muted)] opacity-60"
-              : "text-[color:var(--ink-muted)]",
-          ].join(" ");
-          const inner = (
-            <>
-              <span className={titleCls}>
-                <span>{post.title}</span>
-                {isStub ? (
-                  <span
-                    aria-label="Coming soon"
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-[color:var(--ink-muted)] opacity-70"
-                  >
-                    (soon)
-                  </span>
-                ) : null}
-              </span>
-              <time dateTime={post.isoDate} className={timeCls}>
-                {post.date}
-              </time>
-            </>
-          );
-          return (
-            <li key={post.slug}>
-              {isStub ? (
-                <span aria-disabled="true" className={rowCls}>
-                  {inner}
+      {articles.length === 0 ? (
+        <p className="mt-6 pt-4 border-t border-[color:var(--hairline)] text-[14px] text-[color:var(--ink-muted)] italic">
+          Nothing published in this topic yet.
+        </p>
+      ) : (
+        <ul className="mt-6 divide-y divide-[color:var(--hairline)] border-t border-[color:var(--hairline)]">
+          {articles.map((article) => (
+            <li key={article.slug}>
+              <Link
+                href={article.href}
+                className="grid grid-cols-[1fr_auto] gap-6 items-baseline py-4 group transition-colors duration-150"
+              >
+                <span className="text-[17px] leading-[1.4] transition-colors duration-150 text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)]">
+                  {article.title}
                 </span>
-              ) : (
-                <a href={post.href} className={rowCls}>
-                  {inner}
-                </a>
-              )}
+                <time
+                  dateTime={article.date}
+                  className="font-mono text-[12px] whitespace-nowrap text-[color:var(--ink-muted)]"
+                >
+                  {formatDate(article.date)}
+                </time>
+              </Link>
             </li>
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
