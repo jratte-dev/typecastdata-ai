@@ -46,10 +46,15 @@ export function SeatTimeBudget({
   roles,
   caption,
 }: SeatTimeBudgetProps) {
+  // Note on width: this component is text-dense (three rows of segmented
+  // bars with labels inside each segment) and reads poorly when stretched
+  // to the full-bleed width that the SVG-driven figures use. Sized to
+  // article body width with a tight inner max so segment labels stay near
+  // their natural reading length.
   return (
-    <figure className="my-12 -mx-2 sm:mx-[-3rem] lg:mx-[-7rem]">
-      <div className="bg-[color:var(--paper-deep)] border-y border-[color:var(--hairline)] px-6 sm:px-12 py-10">
-        <div className="max-w-[64rem] mx-auto">
+    <figure className="my-12">
+      <div className="bg-[color:var(--paper-deep)] border-y border-[color:var(--hairline)] px-4 sm:px-8 py-10">
+        <div className="max-w-[42rem] mx-auto">
           {title ? (
             <h3 className="font-mono text-[12px] uppercase tracking-[0.16em] text-[color:var(--ink-muted)] mb-2">
               {title}
@@ -69,7 +74,7 @@ export function SeatTimeBudget({
         </div>
       </div>
       {caption ? (
-        <figcaption className="mt-3 px-2 sm:px-0 font-mono text-[12px] leading-[1.5] text-[color:var(--ink-muted)] max-w-[68ch]">
+        <figcaption className="mt-3 font-mono text-[12px] leading-[1.5] text-[color:var(--ink-muted)] max-w-[68ch]">
           {caption}
         </figcaption>
       ) : null}
@@ -157,24 +162,23 @@ function Bar({
           return (
             <div
               key={i}
-              className="px-3 py-2.5 min-w-0"
+              className="px-2.5 py-2.5 flex flex-col"
               style={{
                 flexBasis: `${w}%`,
                 flexGrow: 0,
                 flexShrink: 0,
                 borderRight: isLast ? "none" : `1px solid ${borderColor}`,
               }}
-              title={seg.label}
             >
               <div
-                className="font-mono text-[11px] leading-[1.35] truncate"
+                className="font-mono text-[11px] leading-[1.35] break-words hyphens-auto"
                 style={{ color: textColor }}
               >
                 {seg.label}
               </div>
               {showWeight ? (
                 <div
-                  className="font-mono text-[10px] tabular-nums mt-0.5"
+                  className="font-mono text-[10px] tabular-nums mt-1"
                   style={{ color: "var(--ink-muted)" }}
                 >
                   {seg.weight}%
@@ -203,7 +207,7 @@ function SegmentNotes({
       {segments.map((seg, i) => (
         <div
           key={i}
-          className="px-3 min-w-0"
+          className="px-2.5"
           style={{
             flexBasis: `${weights[i]}%`,
             flexGrow: 0,
@@ -211,7 +215,7 @@ function SegmentNotes({
           }}
         >
           {seg.note ? (
-            <p className="font-mono text-[10px] leading-[1.4] text-[color:var(--ink-muted)] italic m-0 truncate">
+            <p className="font-mono text-[10px] leading-[1.4] text-[color:var(--ink-muted)] italic m-0 break-words">
               {seg.note}
             </p>
           ) : null}
