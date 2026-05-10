@@ -106,39 +106,21 @@ function Body() {
       <div className="grid gap-12 lg:grid-cols-[minmax(0,68ch)_320px] lg:gap-20 items-start">
         <div className="space-y-12">
           <Bio />
-          <Section label="Now">
-            <p>
-              Currently working on AI-shaped problems for a living.
-              Currently in New Orleans, where the air is heavier than the
-              work and the food is the only thing that takes itself
-              seriously. Currently annoyed at retrieval, at agent
-              frameworks, and at most claims about latency that arrive
-              without numbers attached.
-            </p>
-          </Section>
-
           <Section label="Background">
             <p>
-              Started in Microsoft Business Intelligence in 2006, back when
-              &ldquo;self-service BI&rdquo; was the phrase that was going to
-              fix everything. Has since meandered across most industries and
-              most platforms, shipping pipelines for healthcare, advertising,
-              gaming, and one company that did not survive its own data. Has
-              watched at least three{" "}
-              <em className="not-italic font-medium text-[color:var(--ink)]">
-                next-generation
-              </em>{" "}
-              platforms become tech debt. Has a working theory about why.
+              John first learned he could make a living with SQL queries in
+              2006 when a Seattle-based consulting firm hired him to build
+              SSIS packages, SSAS cubes, and SSRS reports. All of these
+              tools now seem like the punchcards the first computer ran on,
+              but they&rsquo;re all still alive and working today.
             </p>
-          </Section>
-
-          <Section label="Writing">
-            <p>
-              This site is where I write about it. Mostly to clear my head,
-              occasionally to win an argument, never to please an algorithm.
-              New posts go out by RSS or by email, when there is something
-              worth writing, which is not often, which is fine. No upsells,
-              no cadence promises.
+            <p className="mt-4">
+              Over the next 20 years, he moved through almost every industry
+              imaginable: healthcare, automotive, aerospace, food and
+              beverage, financial services, government services, and
+              he&rsquo;s 99% sure one of his clients was actively involved
+              in the adult film industry so he&rsquo;s counting that one
+              too.
             </p>
           </Section>
 
@@ -157,11 +139,8 @@ function Bio() {
   return (
     <div className="space-y-5 text-[18px] sm:text-[19px] leading-[1.65] text-[color:var(--ink)]">
       <p>
-        John Ratté has spent twenty years building data systems for
-        companies that mostly did not deserve them. He started in Microsoft
-        Business Intelligence in 2006 and meandered across most industries
-        and most tools before landing at the edge of the era where robots
-        can finally do the parts of the job he never wanted to do.
+        John Ratté is a data engineer who writes here when he has something
+        worth saying.
       </p>
       <p className="text-[color:var(--ink-muted)]">
         He has a day job. This site is not his employer&rsquo;s. Opinions,
