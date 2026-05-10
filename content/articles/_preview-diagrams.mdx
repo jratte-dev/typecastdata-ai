@@ -1,0 +1,49 @@
+---
+title: "Diagram preview (will be removed before PR #6 merges)"
+slug: "_preview-diagrams"
+description: "Renders the EngineersDay and Bifurcation components with the agentic-AI article's data, so the visual choices can be reviewed before the components are used in real content."
+topic: "ai"
+date: "2026-05-09"
+draft: false
+---
+
+This article exists only to preview the two new diagram components on PR #6 before merge. It will be removed before final merge so the PR stays scoped to the components themselves.
+
+If anything looks wrong (cell sizing, arrow placement, contrast in light or dark mode, mobile layout, anything else), say what's off and the components get iterated on the same PR.
+
+## EngineersDay
+
+The agentic-AI article uses this near the "what replaces the coding is evaluation" section. The visual argument: a Tuesday in 2024 is mostly coding cells; a Tuesday in 2027 is mostly judgment / eval / review / context cells, with one coding cell still hanging on. Total cells stay the same. The job changed shape, not size.
+
+<EngineersDay
+  beforeYear="2024"
+  afterYear="2027"
+  before={["code","code","code","lunch","debug","debug","code","code","code"]}
+  after={["eval","review","judge","lunch","context","eval","review","judge","code"]}
+  subtitle="Coding compresses. Judgment expands. Total hours stay the same."
+/>
+
+## Bifurcation
+
+The agentic-AI article uses this near the "capturing the upside vs the cancellation outcome" section. Premise splits into two branches; the right branch cascades into a terminal outcome.
+
+<Bifurcation
+  premise="Rapid prototyping with agents"
+  leftBranch={{
+    label: "with rigorous evaluation",
+    outcome: { label: "Better products, faster", caption: "More variants. Fewer wrong answers.", tone: "good" }
+  }}
+  rightBranch={{
+    label: "without eval discipline",
+    outcome: { label: "Confidently wrong outputs", caption: "Trust collapses.", tone: "bad" },
+    cascade: { label: "Cancelled in 2027", tone: "bad" }
+  }}
+/>
+
+## What to look at
+
+- Do the activity colors carry the BEFORE/AFTER contrast at a glance?
+- Is the EngineersDay legend useful or noise?
+- Do the Bifurcation arrows arrive at their boxes cleanly across viewport widths?
+- Does the cascade box (terminal outcome) read as more emphatic than the regular outcome above it?
+- How does it look on mobile? On dark mode if you toggle?
