@@ -8,6 +8,8 @@ import {
   Footnotes,
   CodeBlock,
   StackDiagram,
+  EngineersDay,
+  Bifurcation,
 } from "@/components/mdx";
 
 /**
@@ -29,6 +31,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Footnotes,
     CodeBlock,
     StackDiagram,
+    EngineersDay,
+    Bifurcation,
     ...components,
   };
 }

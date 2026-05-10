@@ -24,9 +24,19 @@ export {
   c,
 } from "./components";
 
+export { EngineersDay } from "./EngineersDay";
+export { Bifurcation } from "./Bifurcation";
+
 export type {
   Token,
   TokenKind,
   FootnoteEntry,
   StageDatum,
 } from "./components";
+
+export type { DayActivity, EngineersDayProps } from "./EngineersDay";
+export type {
+  BifurcationProps,
+  BifurcationBranch,
+  BifurcationOutcome,
+} from "./Bifurcation";
