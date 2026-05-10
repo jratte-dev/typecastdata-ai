@@ -24,9 +24,13 @@ export {
   c,
 } from "./components";
 
+export { CycleComparison } from "./CycleComparison";
+
 export type {
   Token,
   TokenKind,
   FootnoteEntry,
   StageDatum,
 } from "./components";
+
+export type { CycleData, CycleComparisonProps } from "./CycleComparison";

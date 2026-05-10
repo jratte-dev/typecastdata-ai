@@ -1,0 +1,41 @@
+---
+title: "Diagram preview (will be removed before PR #6 merges)"
+slug: "_preview-diagrams"
+description: "Renders the CycleComparison component with the agentic-AI article's argument data, so the visual choice can be reviewed before the component is used in real content."
+topic: "ai"
+date: "2026-05-09"
+draft: false
+---
+
+This article exists only to preview the new `<CycleComparison>` component on PR #6 before merge. It will be removed before final merge so the PR stays scoped to the component itself.
+
+The visual argument: each turn of a development cycle costs the same effort. Same human input, same time budget. Rapid prototyping with agents fits more turns into the same window, so the same effort buys more iterations and the work travels further. Both tracks have the same length (= same time window). The number of wheels along each track is the only thing that changes.
+
+## CycleComparison
+
+<CycleComparison
+  title="Same effort, different mileage"
+  subtitle="A quarter's worth of engineering effort, before agents and after. Both tracks span the same time window. Each wheel is one full cycle of build, test, ship."
+  baseline={{
+    label: "Traditional cycle",
+    iterations: 3,
+    iterationName: "cycles per quarter",
+    caption: "One full spec-build-test-ship loop takes weeks. Three or four cycles is a quarter's worth of work."
+  }}
+  accelerated={{
+    label: "Rapid prototyping with agents",
+    iterations: 9,
+    iterationName: "cycles per quarter",
+    caption: "Each cycle is shorter — agents handle the grinding-out, the human runs the judgment loop. Three times the rotations, in the same calendar."
+  }}
+  caption="Counts shown are illustrative. The point is the ratio, not the absolute numbers."
+/>
+
+## What to look at
+
+- Does the visual argument land? Same track length, more wheels = more iterations = further?
+- Are the wheels readable as wheels (do the spokes help, hurt, or feel like noise)?
+- Cypress vs muted: does the contrast carry the "this one is the upside" without being too loud?
+- Mobile: do the wheel tracks compress gracefully, or do they get squished/awkward?
+- Dark mode: toggle the article header theme. Does it still read?
+- Is the caption-per-track useful or noise? Should it be a single overall caption instead?

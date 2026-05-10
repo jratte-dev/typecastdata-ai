@@ -8,6 +8,7 @@ import {
   Footnotes,
   CodeBlock,
   StackDiagram,
+  CycleComparison,
 } from "@/components/mdx";
 
 /**
@@ -29,6 +30,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Footnotes,
     CodeBlock,
     StackDiagram,
+    CycleComparison,
     ...components,
   };
 }
