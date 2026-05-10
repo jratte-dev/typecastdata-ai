@@ -1,48 +1,50 @@
 ---
-title: "Agentic AI Doesn't Reduce Engineering Time. It Reclassifies It."
+title: "Same Effort, More Mileage"
 slug: "agentic-ai-doesnt-reduce-engineering-time"
-description: "The hours don't disappear when AI writes the code. They get redirected to the work the agent can't do: judgment, evaluation, and maintaining the context layer the agent depends on."
+description: "The vendors oversell what AI saves. The skeptics undersell what it ships. Same human effort, materially more output, work that looks different than it used to."
 topic: "ai"
 date: "2026-05-09"
 draft: false
 sections:
-  - id: "the-labor-savings-story-is-intuitive-and-wrong"
-    label: "The labor-savings story is intuitive and wrong"
+  - id: "both-ends-of-the-discourse-miss-it"
+    label: "Both ends of the discourse miss it"
   - id: "what-disappears-is-the-coding-not-the-work"
     label: "What disappears is the coding, not the work"
   - id: "what-replaces-the-coding-is-evaluation"
     label: "What replaces the coding is evaluation"
   - id: "and-context-engineering"
     label: "And context engineering"
-  - id: "capturing-the-upside-vs-the-cancellation-outcome"
-    label: "Capturing the upside vs. the cancellation outcome"
+  - id: "more-cycles-only-if-someone-is-steering"
+    label: "More cycles, only if someone is steering"
   - id: "what-this-looks-like-for-the-people-doing-the-work"
     label: "What this looks like for the people doing the work"
   - id: "what-to-bet-on"
     label: "What to bet on"
 ---
 
-The upside is real, and it's bigger than the timesheet view.
+The upside is real, and bigger than either side of the discourse will admit.
 
 A data engineer who could write a working dbt model in two hours can now scaffold one in five minutes, iterate on three variants in another twenty, and have something defensible by lunch. A pipeline failure that used to mean an hour of log-trawling and lineage-clicking now produces a structured RCA, with a candidate fix, before the on-call has finished their coffee. A dashboard request that used to bounce between a PM and an analyst for two weeks shows up the same afternoon, in three different shapes, ready to be argued about.
 
 This is not a small change. The execution layer of data engineering is genuinely compressing. Rapid prototyping is no longer a fragile ceremony. The space of solutions you can explore for a given problem is larger because exploring is cheap. The end product on the other side is better, not just faster: more variants considered, more dead ends ruled out, more attention available for the things that actually need attention.
 
-So when I say the conversation has the framing wrong, I do not mean the upside isn't real. I mean the upside isn't where the vendor pitch says it is. The pitch says "hours saved." The actual benefit is "hours redirected to higher-value work." Those are not the same claim, and orgs that act on the first one are setting themselves up to fail at the second.
+The vendors oversell this as hours saved. The skeptics undersell it as overhyped vaporware. Both miss the same thing: the same human effort now buys materially more output. The hours don't shrink. The work doesn't vanish. The mileage on each hour goes up. That is the actual story, and the actual reason this matters.
 
-## The labor-savings story is intuitive and wrong
+## Both ends of the discourse miss it
 
-It's intuitive because if you watch a senior engineer write a dbt model and you watch an agent write the same model in 5% of the time, the natural conclusion is that 95% of an engineer's time just got freed. It's wrong because the engineer's time was never about typing.
+The vendor pitch is intuitive: agents do the typing, the typing was 95% of the work, so 95% of an engineer's time just got freed. The skeptic pitch is equally intuitive in the other direction: agents make plausible-looking slop, the typing was the easy part, the real work is judgment, so the value is overstated.
+
+Both treat the engineer's hours as the unit of measure. The hours were never the unit. The work was. And the work doesn't shrink. It gets more reps, against more variants, with more attention to whether each version is actually correct. More gets shipped. The engineer is still working as hard. What they are working on is different, and the visible product on the other side is materially bigger.
 
 The engineer's time was about deciding what model to write. About knowing whether the business actually needs the metric the way it was specified, or whether the spec is wrong. About looking at three candidate joins and recognizing which one matches the underlying entity grain. About reading a failed test and judging whether the test is wrong, the data is wrong, or the model is wrong. The typing was the visible part. The judgment was the work.
 
 When the agent compresses the typing, the judgment doesn't compress with it. It expands, because now the agent is producing output faster than any human can carefully review, which means the bottleneck moves from "can we build this" to "can we tell whether what was built is correct." That bottleneck used to be hidden inside the engineer's head as a continuous low-cost check on their own work. Now it's exposed as an explicit, named, reviewable artifact. The eval. The judgment call. The ship decision.
 
-Engineers don't get fewer hours. They get hours that look different from the hours they used to have. Less of the day in a SQL editor. More of the day reading what an agent wrote, deciding whether it's right, and either pushing it forward or sending it back. The vendor headcount-savings spreadsheet does not survive contact with this dynamic.
+Engineers don't get fewer hours. They get hours that look different from the hours they used to have. Less of the day in a SQL editor. More of the day reading what an agent wrote, deciding whether it's right, and either pushing it forward or sending it back. Both the vendor headcount-savings spreadsheet and the skeptic's "see, it can't really do anything important" take fall apart on contact with this dynamic.
 
 ## What disappears is the coding, not the work
 
-What an agent can do today is impressive and narrow. It can write a dbt model from a clear description, with sources and tests, in conformance with project conventions if those conventions are documented. It can debug a pipeline failure if the lineage is intact and the error is well-formed. It can generate a Lakeflow declarative pipeline from a natural-language brief, sandbox-test it, and propose fixes when it breaks. Genie Code reports 77.1% success on real-world data-science tasks, a number Databricks published with no public methodology, so weight it as directional rather than authoritative.
+What an agent can do today is impressive and narrow. It can write a dbt model from a clear description, with sources and tests, in conformance with project conventions if those conventions are documented. It can debug a pipeline failure if the lineage is intact and the error is well-formed. It can generate a Lakeflow declarative pipeline from a natural-language brief, sandbox-test it, and propose fixes when it breaks. [Genie Code](https://www.databricks.com/blog/introducing-genie-code) reports a 77.1% success rate on real-world data-science tasks. Take it as illustrative; the point is the magnitude, not the digit.
 
 What the agent cannot do is the rest of the job. It cannot decide whether the model captures the metric the business actually needs versus the metric someone described in a Jira ticket six months ago. It cannot decide whether a sandbox-passing fix is the *right* fix or just *a* fix. It cannot tell you that the dashboard you asked for is answering a question your stakeholder didn't actually mean to ask. These calls require domain knowledge, organizational context, and a willingness to say "no, that's not what we need," none of which lives in the agent's training set.
 
@@ -52,29 +54,49 @@ This is the work that doesn't compress. It's also the work that determines wheth
 
 The reclassification has a name in the agent-tooling stack: evaluation. Every serious agent platform shipping in 2026 is built around the assumption that someone is going to spec, run, and review evals.
 
-Mosaic AI Agent Framework's central pitch is Agent Evaluation, which generates synthetic test cases and LLM judges to score agent quality before deployment. Agent Bricks builds the same loop into its no-code surface: declare the task, the system writes evals against it, and the optimization sweep tunes the agent against those evals. dbt Fusion's validation pass against the project graph and warehouse dialect is itself a deterministic eval, not a productivity feature. The productivity feature is incidental. The validation is the point.
+Mosaic AI Agent Framework's central pitch is [Agent Evaluation](https://www.databricks.com/blog/announcing-mosaic-ai-agent-framework-and-agent-evaluation), which generates synthetic test cases and LLM judges to score agent quality before deployment. [Agent Bricks](https://www.databricks.com/company/newsroom/press-releases/databricks-launches-agent-bricks-new-approach-building-ai-agents) builds the same loop into its no-code surface: declare the task, the system writes evals against it, and the optimization sweep tunes the agent against those evals. [dbt Fusion](https://docs.getdbt.com/blog/dbt-fusion-engine)'s validation pass against the project graph and warehouse dialect is itself a deterministic eval, not a productivity feature. The productivity feature is incidental. The validation is the point.
 
-The arxiv Practical Guide for Production Agentic AI Workflows makes this explicit in its "Responsible AI Agents" practice: production agents should run multi-model consortiums with a reasoning agent consolidating the outputs, with the consolidation itself a designed-and-monitored artifact. Translation: the eval is part of the system, not a quality-gate sticker you slap on after the fact.
+The arxiv [Practical Guide for Production Agentic AI Workflows](https://arxiv.org/html/2512.08769v1) makes this explicit in its "Responsible AI Agents" practice: production agents should run multi-model consortiums with a reasoning agent consolidating the outputs, with the consolidation itself a designed-and-monitored artifact. Translation: the eval is part of the system, not a quality-gate sticker you slap on after the fact.
 
 What this means for daily work: the data engineer who used to spend an afternoon writing a model now spends thirty minutes reviewing what the agent wrote, an hour writing the evals that will catch the next variant of the same mistake, and another half-hour deciding whether the eval design is itself correct. The output of the day is not "a model." It's "a model plus the eval discipline that lets the next twenty models ship safely." That is not less work. It is higher-leverage work, which is exactly what should excite anyone who actually wants to build better data products.
 
 ## And context engineering
 
-The other half of the reclassified work is keeping the substrate the agents need actually maintained. Atlan's framing is the cleanest: agents fail on missing context, not model capability (Atlan on AI Agent Use Cases for Data Engineering). The context they need is not exotic. Column-level lineage. Ownership metadata. Semantic layer definitions. Quality scores. Schema-change history. Certification status. The same governance scaffolding the field has been arguing about for a decade, except now it's a precondition for shipping rather than a compliance afterthought.
+The other half of the reclassified work is keeping the substrate the agents need actually maintained. [Atlan's framing](https://atlan.com/know/ai-agent-use-cases-data-engineering/) is the cleanest: agents fail on missing context, not model capability. The context they need is not exotic. Column-level lineage. Ownership metadata. Semantic layer definitions. Quality scores. Schema-change history. Certification status. The same governance scaffolding the field has been arguing about for a decade, except now it's a precondition for shipping rather than a compliance afterthought.
 
 McKinsey's much-cited claim is that agentic AI can automate 60-80% of routine data engineering work. Read the clause that follows: "only when the underlying data foundations are in place." That clause is doing more work than the headline number. The 60-80% is a ceiling for orgs that already invested in the foundation. For everyone else it's roughly zero, with a long tail of cancelled projects.
 
 Atlan also claims 70-80% of a context layer can be bootstrapped from existing artifacts. That leaves 20-30% as ongoing human work, which is not a one-time spike before AI saves you forever. It's a maintained asset. Lineage rots when ETL changes. Ownership metadata goes stale when teams reorg. Semantic layer definitions drift when the business definition of "active customer" shifts and nobody updates MetricFlow. The substrate the agents need is alive, and someone has to keep it alive.
 
-## Capturing the upside vs. the cancellation outcome
+## More cycles, only if someone is steering
 
-The orgs that capture the rapid-prototyping upside are the ones that build the eval discipline alongside the agent fleet, not the ones that ship agents and hope the productivity shows up in the timesheet. Fast prototyping with rigorous evaluation produces better data products, faster, with a wider set of solution variants explored before commit. Fast prototyping with no evaluation produces confidently wrong outputs at scale, which is how Gartner gets to its prediction that more than 40% of agentic AI projects will be cancelled by the end of 2027 (Agentic AI on Data).
+Picture time!
 
-The dbt Labs trust-gap report (vendor-funded but consistent with Gartner) names the same dynamic in friendlier language: AI-driven acceleration is outpacing trust and governance. The translation is that orgs are shipping agentic capability faster than they're shipping the judgment infrastructure to validate what the agents produce, and the gap is going to start eating projects in 2027. The vendors will not say this out loud. The procurement teams will discover it on their own when their first wave of agent-driven dashboards starts producing wrong KPIs that nobody can explain.
+<CycleComparison
+  title="Same effort, different mileage"
+  subtitle="A quarter's worth of engineering effort, before agents and after. Both tracks span the same time window. Each wheel is one full cycle of build, test, ship."
+  baseline={{
+    label: "Traditional cycle",
+    iterations: 3,
+    iterationName: "cycles per quarter",
+    caption: "One full spec-build-test-ship loop takes weeks. Three or four cycles is a quarter's worth of work."
+  }}
+  accelerated={{
+    label: "Rapid prototyping with agents",
+    iterations: 9,
+    iterationName: "cycles per quarter",
+    caption: "Each cycle is shorter. Agents handle the grinding-out; the human runs the judgment loop. Three times the rotations, in the same calendar."
+  }}
+  caption="Counts shown are illustrative. The point is the ratio, not the absolute numbers."
+/>
 
-The cancellation outcome is not a story about AI failing. It's a story about orgs failing to reclassify the work in time to keep up with the capability the agents are producing.
+Same time window. Same human effort budget. The traditional cycle gets through three iterations of build-test-ship; the agent-augmented cycle gets through nine. That ratio is real, and it is what "more bang for the buck" actually buys you in practice. It is not contingent on any vendor's claim about minutes saved per task or any skeptic's claim about agent fragility.
 
-The flip side is the actual prize. Orgs that reclassify well will ship more product, with fewer wrong answers, with engineers doing more interesting work than they were doing in 2024. The dbt Semantic Layer benchmark numbers are a small preview (dbt Labs Semantic Layer vs Text-to-SQL Benchmark 2026): semantic-layer-routed agent queries hit 98-100% accuracy versus 84-90% for raw text-to-SQL, and the failure modes differ qualitatively. Semantic-layer agents return explicit errors when out of scope. Text-to-SQL agents return plausible-wrong. The difference is not in the model. The difference is in the upstream judgment work that built the semantic layer the agent calls into. That work compounds.
+The catch is that more cycles only translates to more value if someone is judging which iterations are worth keeping. Gartner's prediction that more than 40% of agentic AI projects will be cancelled by the end of 2027 is not a prediction about the technology. It is a prediction about orgs that ship cycles without judgment, get more wrong outputs faster, and lose internal trust before the year is out. The cycles run; nobody is steering.
+
+The [dbt Labs trust-gap report](https://www.getdbt.com/blog/new-dbt-labs-report-finds-ai-driven-acceleration-is-outpacing-trust-and-governance), vendor-funded but consistent with Gartner, names the same dynamic in friendlier language: AI-driven acceleration is outpacing trust and governance. The translation is that orgs are shipping agentic capability faster than they're shipping the judgment infrastructure to validate what the agents produce. The vendors won't say this out loud. The procurement teams will discover it on their own when their first wave of agent-driven dashboards starts producing wrong KPIs that nobody can explain.
+
+The flip side is the actual prize. Orgs that pair the cycles with judgment will ship more product, with fewer wrong answers, with engineers doing more interesting work than they were doing in 2024. The [dbt Semantic Layer benchmark numbers](https://docs.getdbt.com/blog/semantic-layer-vs-text-to-sql-2026) are a small preview: semantic-layer-routed agent queries hit 98-100% accuracy versus 84-90% for raw text-to-SQL, and the failure modes differ qualitatively. Semantic-layer agents return explicit errors when out of scope. Text-to-SQL agents return plausible-wrong. The difference is not in the model. The difference is in the upstream judgment work that built the semantic layer the agent calls into. That work compounds.
 
 ## What this looks like for the people doing the work
 
@@ -82,12 +104,12 @@ The senior data engineer's day, three years from now, is not "write the model." 
 
 The junior data engineer's path is also reshaped. The traditional ladder was: learn SQL, learn dbt, learn warehouse internals, eventually learn judgment. The reshaped ladder is: learn to read agent output critically from day one, learn what good evals look like, learn the domain so you can tell whether a model captures the right business meaning. The technical floor is still there. It just gets entered through a different door, and the path up the ladder is faster for the curious and slower for the formulaic.
 
-Maxime Beauchemin's "AI Enablement Engineer" framing fits cleanly here (Beauchemin on the AI Enablement Engineer). The new role is not replacing data engineers. It is multiplying the leverage existing engineers can apply, by removing the friction that kept the rest of the team from shipping. "50 × 3x beats 1 × 10x," in Beauchemin's phrasing. The person at the top of the leverage curve is not the one writing the most code. It's the one whose work makes everyone else's code better.
+Maxime Beauchemin's ["AI Enablement Engineer"](https://preset.io/blog/ai-enablement-engineer/) framing fits cleanly here. The new role is not replacing data engineers. It is multiplying the leverage existing engineers can apply, by removing the friction that kept the rest of the team from shipping. "50 × 3x beats 1 × 10x," in Beauchemin's phrasing. The person at the top of the leverage curve is not the one writing the most code. It's the one whose work makes everyone else's code better.
 
-The org chart probably doesn't shrink. The skills mix changes. The orgs treating this as a labor-savings story are setting themselves up for the cancellation outcome. The orgs treating it as a capability-multiplication story will ship better data products faster than they ever could before, and they'll do it with engineers who like their jobs more than they did in 2024 because the work has gotten more interesting.
+The org chart probably doesn't shrink. The skills mix changes. The orgs treating this as a labor-savings story will fumble the upside they were promised. The orgs that treat it as a capability-multiplication story will quietly ship more product, with fewer wrong answers, with engineers doing more interesting work in 2027 than they were doing in 2024 because the work itself has gotten more interesting.
 
 ## What to bet on
 
-Build the eval discipline before you scale the agent fleet. Treat the context layer as the multiplier it actually is, which means investing in lineage, ownership metadata, semantic layer definitions, and quality signals as ongoing engineering work, not as a one-time governance project. Hire and train for judgment over code throughput. Promote the engineers who are good at telling whether an output is right. Reconsider the ones who measure their value in lines of SQL written. Read McKinsey's 60-80% number with the conditional clause attached. Read the vendor benchmarks with the methodology gap noted.
+Build the eval discipline before you scale the agent fleet. Treat the context layer as the multiplier it actually is, which means investing in lineage, ownership metadata, semantic layer definitions, and quality signals as ongoing engineering work, not as a one-time governance project. Hire and train for judgment over code throughput. Promote the engineers who are good at telling whether an output is right. Read McKinsey's 60-80% number with the conditional clause attached. Take vendor benchmarks as directional.
 
-The hours don't disappear. They get redirected to higher-leverage work: spec'ing evals, reviewing agent output, owning the calls the agent can't make, maintaining the context layer the agent depends on. Done well, this produces better data products with more solution variants explored, fewer wrong answers reaching production, and a workforce doing more interesting work than they were doing before AI showed up. Done badly, it produces the 2027 cancellation cohort. The technology won't decide which one happens. The reclassification will.
+Calm down on both ends of the discourse. The upside is real, the human effort stays steady, the cycles run faster, the output goes further. Treat agentic AI as a labor-savings story and you will fumble the upside. Treat it as overhyped slop and you will be late to it. Treat it as what it is. Same effort, more mileage. You will quietly ship better data products faster than your peers, while doing more interesting work than you were doing in 2024.
