@@ -25,6 +25,8 @@ export {
 } from "./components";
 
 export { CycleComparison } from "./CycleComparison";
+export { PodLayout } from "./PodLayout";
+export { SeatTimeBudget } from "./SeatTimeBudget";
 
 export type {
   Token,
@@ -34,3 +36,5 @@ export type {
 } from "./components";
 
 export type { CycleData, CycleComparisonProps } from "./CycleComparison";
+export type { PodNode, PodEdge, PodLayoutProps } from "./PodLayout";
+export type { Segment, Role, SeatTimeBudgetProps } from "./SeatTimeBudget";

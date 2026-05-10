@@ -9,6 +9,8 @@ import {
   CodeBlock,
   StackDiagram,
   CycleComparison,
+  PodLayout,
+  SeatTimeBudget,
 } from "@/components/mdx";
 
 /**
@@ -31,6 +33,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     CodeBlock,
     StackDiagram,
     CycleComparison,
+    PodLayout,
+    SeatTimeBudget,
     ...components,
   };
 }
