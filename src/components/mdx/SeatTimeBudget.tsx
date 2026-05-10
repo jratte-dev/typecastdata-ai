@@ -1,12 +1,13 @@
 import * as React from "react";
 
 /**
- * SeatTimeBudget — for each role, two stacked horizontal bars showing the
+ * SeatTimeBudget — for each role, two side-by-side columns showing the
  * activities that fill the seat today versus tomorrow. Today segments may
- * carry explicit `weight` numbers (treated as percentages); when no weights
- * are set, segments split evenly. Tomorrow segments always render evenly,
- * because the argument the visual makes is "the work changes," not "the
- * hour count changes."
+ * carry explicit `weight` numbers (treated as percentages) which control
+ * the block heights; when no weights are set, segments split the column
+ * height evenly. Tomorrow columns always render evenly, because the
+ * argument the visual makes is "the work changes," not "the hour count
+ * changes."
  *
  * Designed for the consulting-pod-under-AI-tooling article. Works for any
  * before/after activity comparison where the editorial point is qualitative
@@ -14,11 +15,11 @@ import * as React from "react";
  */
 
 export type Segment = {
-  /** Activity label rendered inside the segment. */
+  /** Activity label rendered inside the segment block. */
   label: string;
-  /** Percentage 0-100. Optional. When omitted, evenly splits the bar. */
+  /** Percentage 0-100. Optional. When omitted, evenly splits the column. */
   weight?: number;
-  /** Optional small note rendered under the segment. */
+  /** Optional small note rendered under the label. */
   note?: string;
 };
 
@@ -29,7 +30,7 @@ export type Role = {
   today: Segment[];
   /** Tomorrow's activities for this seat. */
   tomorrow: Segment[];
-  /** Optional caveat rendered under the tomorrow bar. */
+  /** Optional caveat rendered under the tomorrow column. */
   tomorrowNote?: string;
 };
 
@@ -46,10 +47,13 @@ export function SeatTimeBudget({
   roles,
   caption,
 }: SeatTimeBudgetProps) {
+  // Constrained to article body width because the content is text-dense.
+  // Two columns side by side per role; activities stacked vertically
+  // within each column with heights proportional to weight.
   return (
-    <figure className="my-12 -mx-2 sm:mx-[-3rem] lg:mx-[-7rem]">
-      <div className="bg-[color:var(--paper-deep)] border-y border-[color:var(--hairline)] px-6 sm:px-12 py-10">
-        <div className="max-w-[64rem] mx-auto">
+    <figure className="my-12">
+      <div className="bg-[color:var(--paper-deep)] border-y border-[color:var(--hairline)] px-4 sm:px-8 py-10">
+        <div className="max-w-[42rem] mx-auto">
           {title ? (
             <h3 className="font-mono text-[12px] uppercase tracking-[0.16em] text-[color:var(--ink-muted)] mb-2">
               {title}
@@ -69,7 +73,7 @@ export function SeatTimeBudget({
         </div>
       </div>
       {caption ? (
-        <figcaption className="mt-3 px-2 sm:px-0 font-mono text-[12px] leading-[1.5] text-[color:var(--ink-muted)] max-w-[68ch]">
+        <figcaption className="mt-3 font-mono text-[12px] leading-[1.5] text-[color:var(--ink-muted)] max-w-[68ch]">
           {caption}
         </figcaption>
       ) : null}
@@ -84,51 +88,32 @@ function RoleRow({ role }: { role: Role }) {
         {role.name}
       </div>
 
-      <div className="grid grid-cols-[5.5rem_1fr] gap-x-4 gap-y-5 items-start">
-        <RowLabel text="Today" />
-        <Bar segments={role.today} tone="muted" />
-
-        <RowLabel text="Tomorrow" tone="accent" />
-        <div>
-          <Bar segments={role.tomorrow} tone="accent" forceEven />
-          {role.tomorrowNote ? (
-            <p className="mt-2 font-mono text-[11px] leading-[1.5] text-[color:var(--ink-muted)] italic">
-              {role.tomorrowNote}
-            </p>
-          ) : null}
-        </div>
+      <div className="grid grid-cols-2 gap-3 sm:gap-5">
+        <Column label="Today" segments={role.today} tone="muted" />
+        <Column
+          label="Tomorrow"
+          segments={role.tomorrow}
+          tone="accent"
+          forceEven
+          note={role.tomorrowNote}
+        />
       </div>
     </div>
   );
 }
 
-function RowLabel({
-  text,
-  tone = "muted",
-}: {
-  text: string;
-  tone?: "muted" | "accent";
-}) {
-  const color =
-    tone === "accent" ? "var(--cypress-deep)" : "var(--ink-muted)";
-  return (
-    <div
-      className="font-mono text-[10px] uppercase tracking-[0.16em] pt-2"
-      style={{ color }}
-    >
-      {text}
-    </div>
-  );
-}
-
-function Bar({
+function Column({
+  label,
   segments,
   tone,
   forceEven = false,
+  note,
 }: {
+  label: string;
   segments: Segment[];
   tone: "muted" | "accent";
   forceEven?: boolean;
+  note?: string;
 }) {
   const weights = computeWeights(segments, forceEven);
 
@@ -140,41 +125,58 @@ function Bar({
       : "color-mix(in oklch, var(--ink-muted) 4%, var(--paper))";
   const textColor =
     tone === "accent" ? "var(--cypress-deep)" : "var(--ink)";
+  const headerColor =
+    tone === "accent" ? "var(--cypress-deep)" : "var(--ink-muted)";
 
   return (
-    <div>
+    <div className="flex flex-col">
       <div
-        className="flex w-full overflow-hidden rounded-sm"
+        className="font-mono text-[10px] uppercase tracking-[0.16em] mb-2"
+        style={{ color: headerColor }}
+      >
+        {label}
+      </div>
+      <div
+        className="flex flex-col rounded-sm overflow-hidden"
         style={{
+          minHeight: "22rem",
           border: `1px solid ${borderColor}`,
           background: fillColor,
         }}
       >
         {segments.map((seg, i) => {
           const isLast = i === segments.length - 1;
-          const w = weights[i];
           const showWeight = !forceEven && seg.weight !== undefined;
           return (
             <div
               key={i}
-              className="px-3 py-2.5 min-w-0"
+              className="px-3 py-2.5 flex items-start justify-between gap-2"
               style={{
-                flexBasis: `${w}%`,
-                flexGrow: 0,
+                flexGrow: weights[i],
                 flexShrink: 0,
-                borderRight: isLast ? "none" : `1px solid ${borderColor}`,
+                flexBasis: 0,
+                minHeight: "3rem",
+                borderBottom: isLast
+                  ? "none"
+                  : `1px solid ${borderColor}`,
               }}
-              title={seg.label}
             >
-              <div
-                className="font-mono text-[11px] leading-[1.35] truncate"
-                style={{ color: textColor }}
-              >
-                {seg.label}
+              <div className="flex-1 min-w-0">
+                <div
+                  className="font-mono text-[11px] leading-[1.4] break-words"
+                  style={{ color: textColor }}
+                >
+                  {seg.label}
+                </div>
+                {seg.note ? (
+                  <p className="font-mono text-[10px] leading-[1.4] mt-1 italic m-0 break-words text-[color:var(--ink-muted)]">
+                    {seg.note}
+                  </p>
+                ) : null}
               </div>
               {showWeight ? (
                 <div
-                  className="font-mono text-[10px] tabular-nums mt-0.5"
+                  className="font-mono text-[10px] tabular-nums shrink-0 mt-0.5"
                   style={{ color: "var(--ink-muted)" }}
                 >
                   {seg.weight}%
@@ -184,68 +186,43 @@ function Bar({
           );
         })}
       </div>
-      <SegmentNotes segments={segments} weights={weights} />
-    </div>
-  );
-}
-
-function SegmentNotes({
-  segments,
-  weights,
-}: {
-  segments: Segment[];
-  weights: number[];
-}) {
-  const hasAny = segments.some((s) => s.note);
-  if (!hasAny) return null;
-  return (
-    <div className="flex w-full mt-1.5">
-      {segments.map((seg, i) => (
-        <div
-          key={i}
-          className="px-3 min-w-0"
-          style={{
-            flexBasis: `${weights[i]}%`,
-            flexGrow: 0,
-            flexShrink: 0,
-          }}
-        >
-          {seg.note ? (
-            <p className="font-mono text-[10px] leading-[1.4] text-[color:var(--ink-muted)] italic m-0 truncate">
-              {seg.note}
-            </p>
-          ) : null}
-        </div>
-      ))}
+      {note ? (
+        <p className="mt-2 font-mono text-[11px] leading-[1.5] text-[color:var(--ink-muted)] italic">
+          {note}
+        </p>
+      ) : null}
     </div>
   );
 }
 
 /**
- * Resolve segment widths. If forceEven, all equal. Otherwise:
- *   - Sum the explicit weights.
- *   - Distribute (100 - sum) across unweighted segments evenly.
- *   - If everything is unweighted, all equal.
+ * Resolve segment weight values used by flex-grow on each block. If
+ * forceEven, all 1 (equal heights). Otherwise:
+ *   - When all segments have explicit weights, return them as-is.
+ *   - When some are unweighted, distribute (100 - explicitTotal) evenly.
+ *   - When none are weighted, all equal.
  */
 function computeWeights(segments: Segment[], forceEven: boolean): number[] {
   const n = segments.length;
   if (n === 0) return [];
-  if (forceEven) return segments.map(() => 100 / n);
+  if (forceEven) return segments.map(() => 1);
 
   const explicitTotal = segments.reduce(
     (acc, s) => acc + (s.weight ?? 0),
     0,
   );
-  const unweightedCount = segments.filter((s) => s.weight === undefined)
-    .length;
+  const unweightedCount = segments.filter(
+    (s) => s.weight === undefined,
+  ).length;
 
   if (unweightedCount === 0) {
-    // Normalize in case explicit weights don't sum to 100.
-    if (explicitTotal === 0) return segments.map(() => 100 / n);
-    return segments.map((s) => ((s.weight ?? 0) / explicitTotal) * 100);
+    if (explicitTotal === 0) return segments.map(() => 1);
+    return segments.map((s) => s.weight ?? 0);
   }
 
   const remainder = Math.max(0, 100 - explicitTotal);
   const perUnweighted = remainder / unweightedCount;
-  return segments.map((s) => (s.weight !== undefined ? s.weight : perUnweighted));
+  return segments.map((s) =>
+    s.weight !== undefined ? s.weight : perUnweighted,
+  );
 }
