@@ -11,7 +11,7 @@ import {
 import { TOPICS } from "@/lib/content/topics";
 
 export const metadata: Metadata = {
-  title: "Typecast Data AI — John Ratté",
+  title: { absolute: "Typecast Data AI — John Ratté" },
   description:
     "Data engineering, AI, and the gap between what gets shipped and what gets shipped well. By John Ratté, in New Orleans.",
 };

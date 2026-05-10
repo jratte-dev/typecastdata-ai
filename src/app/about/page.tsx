@@ -3,7 +3,7 @@ import { BrickNav } from "../BrickNav";
 import { SiteFooter } from "../SiteFooter";
 
 export const metadata: Metadata = {
-  title: "About · Typecast Data AI",
+  title: "About",
   description:
     "John Ratté: senior data engineer, twenty years in, currently in New Orleans, writing here because the explanations on the internet are worse.",
 };

@@ -5,7 +5,7 @@ import { ArchiveControls } from "./ArchiveControls";
 import { getAllArticles } from "@/lib/content/articles";
 
 export const metadata: Metadata = {
-  title: "Archive · Typecast Data AI",
+  title: "Archive",
   description:
     "Everything John Ratté has published on typecastdata.ai. Reverse chronological. Filterable.",
 };
