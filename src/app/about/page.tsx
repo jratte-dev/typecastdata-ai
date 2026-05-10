@@ -108,7 +108,7 @@ function Body() {
           <Bio />
           <Section label="Now">
             <p>
-              Currently freelancing on a handful of AI infra projects.
+              Currently working on AI-shaped problems for a living.
               Currently in New Orleans, where the air is heavier than the
               work and the food is the only thing that takes itself
               seriously. Currently annoyed at retrieval, at agent
@@ -119,10 +119,12 @@ function Body() {
 
           <Section label="Background">
             <p>
-              Started in Postgres, moved to warehouses around the time
-              warehouses started being interesting again. Has shipped
-              pipelines for healthcare, advertising, gaming, and one company
-              that did not survive its own data. Has watched at least three{" "}
+              Started in Microsoft Business Intelligence in 2006, back when
+              &ldquo;self-service BI&rdquo; was the phrase that was going to
+              fix everything. Has since meandered across most industries and
+              most platforms, shipping pipelines for healthcare, advertising,
+              gaming, and one company that did not survive its own data. Has
+              watched at least three{" "}
               <em className="not-italic font-medium text-[color:var(--ink)]">
                 next-generation
               </em>{" "}
@@ -156,15 +158,14 @@ function Bio() {
     <div className="space-y-5 text-[18px] sm:text-[19px] leading-[1.65] text-[color:var(--ink)]">
       <p>
         John Ratté has spent twenty years building data systems for
-        companies that mostly did not deserve them. He is now in New
-        Orleans, working on AI-shaped problems for clients who would rather
-        not have AI-shaped problems.
+        companies that mostly did not deserve them. He started in Microsoft
+        Business Intelligence in 2006 and meandered across most industries
+        and most tools before landing at the edge of the era where robots
+        can finally do the parts of the job he never wanted to do.
       </p>
       <p className="text-[color:var(--ink-muted)]">
-        Available for the kind of consulting that involves writing things
-        down before doing them, and for talking honestly about whether AI
-        is the right answer to your particular question. (It usually is
-        not.)
+        He has a day job. This site is not his employer&rsquo;s. Opinions,
+        jokes, and bad takes here belong to him alone.
       </p>
     </div>
   );
