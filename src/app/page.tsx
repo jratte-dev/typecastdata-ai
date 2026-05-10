@@ -25,7 +25,12 @@ export default function HomePage() {
       <Masthead latest={latest} />
 
       <main id="main">
-        <BioStrip />
+        <BioIntro />
+        <BrickPullQuote
+          quote="It’s like a podcast you can read!"
+          attribution="Overheard, coffee shop in the Marigny, 2025"
+        />
+        <BioOutro />
         <LatestPosts articles={recent} />
         <ArchiveLink />
       </main>
@@ -173,11 +178,11 @@ function CtaLink({
  * Bio strip — quietly factual, photo placeholder until supplied
  * -------------------------------------------------------------- */
 
-function BioStrip() {
+function BioIntro() {
   return (
     <section
       aria-labelledby="bio-heading"
-      className="px-6 sm:px-10 max-w-[88rem] mx-auto pt-20 sm:pt-28 pb-16 sm:pb-24"
+      className="px-6 sm:px-10 max-w-[88rem] mx-auto pt-20 sm:pt-28 pb-16 sm:pb-20"
     >
       <h2
         id="bio-heading"
@@ -186,34 +191,64 @@ function BioStrip() {
         Who
       </h2>
 
-      <div className="space-y-6 text-[18px] sm:text-[19px] leading-[1.6] max-w-[60ch]">
-        <p>
-          John has spent the last 20 years building data and analytics
-          solutions, including some of the most elaborate data
-          visualizations ever exported to Excel. With a new focus on
-          AI-centric development to deliver a wider range of custom
-          solutions, he currently resides and works in New Orleans
-          continuing his search for truth, happiness, and a po-boy
-          restaurant that is open on Mondays.
-        </p>
-        <figure className="relative my-16 sm:my-24 pl-12 sm:pl-16">
-          <span
-            aria-hidden
-            className="absolute left-0 top-[-0.35em] text-[5rem] sm:text-[6rem] leading-none italic text-[color:var(--ink-muted)] select-none"
+      <p className="text-[18px] sm:text-[19px] leading-[1.6] max-w-[60ch]">
+        John has spent the last 20 years building data and analytics
+        solutions, including some of the most elaborate data
+        visualizations ever exported to Excel. With a new focus on
+        AI-centric development to deliver a wider range of custom
+        solutions, he currently resides and works in New Orleans
+        continuing his search for truth, happiness, and a po-boy
+        restaurant that is open on Mondays.
+      </p>
+    </section>
+  );
+}
+
+function BrickPullQuote({
+  quote,
+  attribution,
+}: {
+  quote: string;
+  attribution: string;
+}) {
+  return (
+    <section
+      aria-label="Pull quote"
+      className="bg-[color:var(--brick-band)] text-[color:var(--paper-on-brick)]"
+    >
+      <div className="mx-auto max-w-[88rem] px-6 sm:px-10 py-20 sm:py-28">
+        <figure className="max-w-[52rem]">
+          <blockquote
+            className="
+              font-serif italic
+              text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.2]
+              text-[color:var(--paper-on-brick)]
+            "
           >
-            &ldquo;
-          </span>
-          <blockquote className="font-serif italic text-[24px] sm:text-[28px] leading-[1.35] text-[color:var(--ink)]">
-            It&rsquo;s like a podcast you can read!
+            {quote}
           </blockquote>
-          <figcaption className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--ink-muted)]">
-            Overheard, coffee shop in the Marigny, 2025
+          <div
+            aria-hidden
+            className="mt-8 h-px bg-[color:var(--hairline-on-brick)] max-w-[18rem]"
+          />
+          <figcaption className="mt-5 font-mono text-[11px] sm:text-[12px] uppercase tracking-[0.18em] text-[color:var(--paper-on-brick-muted)]">
+            {attribution}
           </figcaption>
         </figure>
-        <p>
-          <CtaLink href="/about">Read the about</CtaLink>
-        </p>
       </div>
+    </section>
+  );
+}
+
+function BioOutro() {
+  return (
+    <section
+      aria-label="About link"
+      className="px-6 sm:px-10 max-w-[88rem] mx-auto pt-16 sm:pt-20 pb-20 sm:pb-24"
+    >
+      <p className="max-w-[60ch] text-[18px] sm:text-[19px] leading-[1.6]">
+        <CtaLink href="/about">Read the about</CtaLink>
+      </p>
     </section>
   );
 }
