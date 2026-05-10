@@ -24,8 +24,7 @@ export {
   c,
 } from "./components";
 
-export { EngineersDay } from "./EngineersDay";
-export { Bifurcation } from "./Bifurcation";
+export { CycleComparison } from "./CycleComparison";
 
 export type {
   Token,
@@ -34,9 +33,4 @@ export type {
   StageDatum,
 } from "./components";
 
-export type { DayActivity, EngineersDayProps } from "./EngineersDay";
-export type {
-  BifurcationProps,
-  BifurcationBranch,
-  BifurcationOutcome,
-} from "./Bifurcation";
+export type { CycleData, CycleComparisonProps } from "./CycleComparison";
