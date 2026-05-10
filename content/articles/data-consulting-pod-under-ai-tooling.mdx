@@ -1,0 +1,144 @@
+---
+title: "The data consulting pod under AI tooling: what each seat does now"
+slug: "data-consulting-pod-under-ai-tooling"
+description: "A tour of three seats on a data-platform consulting pod: how we work today, how we are likely to work tomorrow, and what each seat needs to get ready for."
+topic: "trade"
+date: "2026-05-10"
+draft: false
+sections:
+  - id: "the-pm-business-analyst"
+    label: "The PM / Business Analyst"
+  - id: "the-lead-architect"
+    label: "The Lead Architect"
+  - id: "the-engineers"
+    label: "The Engineers"
+  - id: "what-we-are-getting-ready-for"
+    label: "What we are getting ready for"
+---
+
+The standard data-platform consulting pod is small and well-defined on paper. A PM or business analyst owns requirements and backlog. A lead architect manages the developer team and the client-facing technical conversation. Two or three engineers build the pipelines, the dbt models, the semantic layer, and the reporting and dashboard assets. The titles have been stable for the better part of a decade.
+
+The way the seats actually work in practice is less symmetric. The BA usually sits in a non-technical protection zone, operating as a background conductor for communications and meetings. The lead architect doubles as lead engineer, mentors juniors, and ends up shouldering most of the requirements gathering effort because of the BA's technical knowledge gaps. The engineers execute granular tasks inside whatever plan the architect has laid out, often down to the task level. That asymmetry is the actual operating model, not the org-chart version of it.
+
+What follows is a tour of those three seats: how we work today, how we are likely to work tomorrow, and what each seat needs to get ready for. This is a thought experiment, not a playbook. There are multiple right answers, several wrong ones, and the operating model that wins is going to be the one that gets the ownership question right first.
+
+<PodLayout
+  title="The consulting data team pod today"
+  subtitle="Where the seats sit, and where the work actually flows. Solid lines are the formal communication paths; the dashed line between BA and architect is the technical-translation back-channel that keeps the engagement moving."
+  nodes={[
+    { id: "client", label: "Client", role: "external", note: "Stakeholders, decision-makers" },
+    { id: "ba", label: "PM / BA", role: "non-technical", note: "Comms pipeline. Meetings, admin, status. Non-technical protection zone." },
+    { id: "architect", label: "Lead Architect", role: "technical lead", note: "Also lead engineer. Owns the solution. Mentors juniors. Carries most requirements work in practice." },
+    { id: "engineers", label: "Engineers (2-3)", role: "technical", note: "Execute granular tasks inside the architect's plan." }
+  ]}
+  edges={[
+    { from: "client", to: "ba", label: "Formal channel", style: "solid" },
+    { from: "client", to: "architect", label: "Technical conversations (in practice)", style: "solid" },
+    { from: "ba", to: "architect", label: "Telephone game on technical concepts", style: "dashed", bidirectional: true, emphasis: true },
+    { from: "architect", to: "engineers", label: "Task-level delegation, mentoring", style: "solid" }
+  ]}
+  caption="The org-chart version of this pod is symmetric. The actual operating model is not. The architect chair absorbs requirements work the BA seat is not equipped to carry."
+/>
+
+## The PM / Business Analyst
+
+The BA is the communication pipeline between the client and the development team. Meetings, emails, status updates, change requests, escalation paths: almost everything routes through this single point of contact. On a healthy engagement, that's load-bearing work. The BA is the reason the architect and the engineers can stay heads-down and trust that the channel to the client is being managed.
+
+The wrinkle is that the channel runs through a non-technical seat. Most of the time, I as the architect am explaining a technical concept to the BA, who then relays a version of it to the client, who then relays a question back through the same chain. It is a fun game of telephone, and the version of any given idea that arrives at the client end has accumulated translation losses on the way. The architect compensates by doing more of the actual requirements gathering directly. The BA's role contracts toward admin and meeting choreography by default.
+
+AI tooling is going to push hard on this seat in one of two directions, and the choice is not yet made.
+
+In one direction, the BA expands. With the same AI tooling the rest of the team uses, a BA can translate technical concepts on their own, reach a working understanding of the architecture, and start translating client requirements into prompts and acceptance criteria the engineering team can act on directly. The verification of AI-generated artifacts before they reach the client moves into this seat. The role grows into something closer to a junior product manager with technical fluency.
+
+In the other direction, the BA contracts. The admin work is exactly what general-purpose AI tools are best at, and a BA who isn't equipped or trained on technical tooling ends up reduced to scheduling, transcription, and document polishing. The requirements collection, interpretation, and validation work consolidates onto the architect chair, where it has been migrating informally for years anyway.
+
+I don't have many data points yet on which way this resolves, because we are still very early in the AI journey on consulting engagements. What I have seen is BAs reaching for ChatGPT or Claude to translate, understand, or elucidate complex technical issues that come across their desks. The results are mixed. We don't yet have the right structures in place, and the BAs don't have the experience to know how to use AI as anything more than a slot machine: put in a prompt, hope for the best, take the output at face value. That opens the door to a lot of confident inaccuracy.
+
+The headline concern is not hallucination in the technical sense. It is being led with blinders on. A BA learning a new technical topic through an AI assistant doesn't know when the assistant has subtly turned them in the wrong direction. Trying to fly from New York to LA, a one degree miss on your heading puts you in Mexico. The error compounds invisibly until it is too late and too expensive to correct.
+
+What this seat needs to get ready for is the choice. Pick the model. If the BA is going to expand into a development-adjacent seat, equip them with the same tooling, training, and review structures the engineering team has, and treat the requirements work as a real engineering activity. If the BA is going to contract toward admin, name that out loud and put the requirements ownership formally on the architect chair so it stops being a default-by-neglect arrangement.
+
+## The Lead Architect
+
+The lead architect on a data-platform engagement puts the entire solution on their shoulders. The seat owns the design, makes sure the tools are in place, lays out the work for the engineering team (sometimes down to the task level), and stays in continuous contact with the engagement lead and the BA to monitor progress and absorb the never-ending stream of scope changes. None of this is unusual. The mix is.
+
+In a typical sprint, the time goes roughly: 50% on backlog management and direct assistance to the engineering team, 30% on client conversations and meetings, 10% on design and rework of the design, 10% on actual requirements gathering and refinement. The whole engagement is run as a working-to-plan exercise. The architect is trying to get as much right on the first try as possible, hoping the plan is correct enough to minimize iteration when it inevitably hits reality.
+
+AI tooling changes that calculus, in a useful direction. AI-accelerated coding shortens the feedback loop on the design-build-revise cycle. The team gets more reps on the loop in the same calendar time, which means the plan gets corrected sooner and the end product gets shaped more iteratively against the actual flight path. This helps requirements *validation* far more than requirements *gathering*. The gathering step is structurally flawed, because most of the time the client doesn't know what they really want until they see a slightly wrong version of it in front of them. Cheaper iteration means more chances to put a slightly wrong version in front of the client, which is how the right version gets discovered. The architect chair stops being responsible for getting it right on the first try, and starts being responsible for getting it right on the third.
+
+The biggest upside for this seat is upstream of any specific tool. With AI handling more of the granular execution, my time on engagements shifts away from teaching junior engineers how to do specific things, toward giving them the latitude to work independently and helping them review their outputs. Less hand-holding, more guidance. That changes what the architect is for. The seat becomes less of an over-the-shoulder coach and more of a senior reviewer and judgment escalation point.
+
+The biggest concern is on the business model, not the technology. If the productivity gains are real, and clients and sales teams all converge on the view that effort is reduced by X% so scope can increase by X%, we are headed for a world of hurt and missed targets. The efficiency does not stay with the team as capacity. It gets sold back into the engagement as expanded scope, often before the team has actually proven out the new operating model on a live project. The architect chair ends up trying to deliver the inflated scope on the same shoulders, with the same number of hours, against a client who was promised that AI would absorb the difference.
+
+What this seat needs to get ready for is the scope-versus-capacity conversation. The architect has to be in the room when sales is talking about engagement sizing under the new model. Otherwise the productivity gain becomes a sales lever rather than a delivery one, and the seat that absorbs the gap is this one.
+
+## The Engineers
+
+Engineers on a data-platform pod execute the granular tasks that build out the larger plan. As they mature, they get more ownership and latitude over specific domains. Generally, though, they focus on their area of the build: pipelines, models, semantic layer config, dashboard work. Senior engineers shade toward leading the build of one of those areas. Junior engineers shade toward following someone else's lead inside one.
+
+The uncomfortable truth about this seat is that engineers do today what agents will do tomorrow. Task-level execution is exactly the kind of work AI tooling is most ready to absorb, and the trajectory points clearly that direction. That is not a near-term threat to engineer headcount on most engagements, but it is a clear signal about what the seat is becoming and what it is no longer for.
+
+I am still waiting to see what the day-to-day looks like in practice, because we have not yet run enough engagements with mature AI integration to draw firm conclusions. The hope is that AI tooling makes the seat into a better filter for talent. Only the curious and motivated, the engineers who push back on AI suggestions and reason through whether the output is actually right, will be able to function well in the new model. The rest will struggle in visible ways, and that visibility is itself useful. It is much harder to evaluate junior potential under the current model where everyone is buried in the same boilerplate.
+
+The biggest upside for this seat is faster growth into larger roles. In the consulting pod context specifically, the engineer seat starts to look more like an apprenticeship into the lead architect chair than a destination role of senior engineer. Cheaper iteration means we can finally afford something the current model never had time for: letting junior engineers build wrong on purpose, then walking through what went wrong and what to look for next time. That is the only way junior resources actually get better, and it is exactly the cycle the time pressure on a fixed-fee engagement has historically squeezed out. AI makes those cycles cheap enough to invest in.
+
+The biggest concern is the inverse of the upside. The engineer's hardest new skill is learning how to tell whether what they have built is actually correct. Some of that comes from experience, the same way it always has. Some of it requires a new specific judgment: knowing whether the AI is confidently wrong on a given output. That is a skill the consulting market does not yet train for, and the engineers who don't develop it become a quiet liability, shipping plausible-looking work that the architect has to catch on review, every time, because the engineer didn't catch it themselves.
+
+What this seat needs to get ready for is the apprenticeship that is now load-bearing. The architect chair has to actively shape it, the engineering seat has to consciously inhabit it, and the engagement has to budget for it. Otherwise the seat becomes a place where AI does the work and humans do not develop, which is a worse outcome than not adopting AI in the first place.
+
+<SeatTimeBudget
+  title="What each seat owns today versus tomorrow"
+  subtitle="Same hours, different work. The architect's today bar uses the concrete time mix from current operating practice; everywhere else, segments are shown evenly weighted because the point is the work that fills the seat, not the precise allocation."
+  roles={[
+    {
+      name: "PM / BA",
+      today: [
+        { label: "Comms pipeline & meetings" },
+        { label: "Admin & status reporting" },
+        { label: "Technical translation via telephone game" }
+      ],
+      tomorrow: [
+        { label: "Stakeholder dialogue (more of it)" },
+        { label: "Prompt translation & requirements validation" },
+        { label: "Verification of AI-generated artifacts before stakeholder hand-off" }
+      ],
+      tomorrowNote: "If the seat takes the expansion fork. If it contracts to admin only, requirements work consolidates onto the architect."
+    },
+    {
+      name: "Lead Architect",
+      today: [
+        { label: "Backlog management & engineer assistance", weight: 50 },
+        { label: "Client meetings", weight: 30 },
+        { label: "Design & rework", weight: 10 },
+        { label: "Requirements gathering", weight: 10 }
+      ],
+      tomorrow: [
+        { label: "Shorter design-build-revise feedback loops" },
+        { label: "Junior reviewer & judgment escalation point" },
+        { label: "Requirements validation through cheap iteration" },
+        { label: "Scope-vs-capacity conversations with sales", note: "the new front line" }
+      ]
+    },
+    {
+      name: "Engineers (2-3)",
+      today: [
+        { label: "Granular task execution" },
+        { label: "Following the architect's plan" },
+        { label: "Domain ownership (as they mature)" }
+      ],
+      tomorrow: [
+        { label: "Reviewing & validating AI-generated work" },
+        { label: "Building wrong on purpose, learning from it" },
+        { label: "Apprenticeship into the architect chair" },
+        { label: "New skill: detecting confident-wrong AI output" }
+      ]
+    }
+  ]}
+  caption="Tomorrow columns show qualitative work shifts, not measured time allocations. The seats that figure out their tomorrow column first are the ones that capture the productivity gain instead of letting it dissipate into expanded scope."
+/>
+
+## What we are getting ready for
+
+A lot of change is coming, and the honest read is that this is going to be more of a choose-your-own-adventure than a playbook. The pod that figures out the new operating model first will not look much like the pod that ran the engagement six months ago, and the pod six months from now will not look much like the one that figures it out first.
+
+The prerequisite for getting any of this right is examining the current state and naming who *actually* owns what on a working engagement, not who owns it on the org chart. The asymmetries are where the AI conversation has to start. Get the ownership question right under the current model, and the new operating model has somewhere to land. Skip that step, and AI tooling will land on top of the existing arrangements and reshape them by accident, which is how the productivity gains disappear and the timeline pressure stays exactly where it has always been.
