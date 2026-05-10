@@ -4,11 +4,10 @@ import { BrickNav } from "./BrickNav";
 import { SiteFooter } from "./SiteFooter";
 import {
   getAllArticles,
-  getArticlesByTopic,
   formatDate,
   type Article,
 } from "@/lib/content/articles";
-import { TOPICS } from "@/lib/content/topics";
+import { topicMeta } from "@/lib/content/topics";
 
 export const metadata: Metadata = {
   title: { absolute: "Typecast Data AI — John Ratté" },
@@ -19,6 +18,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   const all = getAllArticles();
   const latest = all[0] ?? null;
+  const recent = all.slice(0, 5);
 
   return (
     <div className="bg-[color:var(--paper)] text-[color:var(--ink)]">
@@ -26,7 +26,7 @@ export default function HomePage() {
 
       <main id="main">
         <BioStrip />
-        <TopicClusters />
+        <LatestPosts articles={recent} />
         <ArchiveLink />
       </main>
 
@@ -196,7 +196,7 @@ function BioStrip() {
           continuing his search for truth, happiness, and a po-boy
           restaurant that is open on Mondays.
         </p>
-        <figure className="relative my-10 pl-10 sm:pl-14">
+        <figure className="relative my-16 sm:my-24 pl-12 sm:pl-16">
           <span
             aria-hidden
             className="absolute left-0 top-[-0.35em] text-[5rem] sm:text-[6rem] leading-none italic text-[color:var(--ink-muted)] select-none"
@@ -219,74 +219,41 @@ function BioStrip() {
 }
 
 /* -------------------------------------------------------------- *
- * Topic clusters — four doors into the writing
+ * Latest posts — flat reverse-chronological list, five most recent
  * -------------------------------------------------------------- */
 
-function TopicClusters() {
+function LatestPosts({ articles }: { articles: Article[] }) {
   return (
     <section
-      aria-labelledby="topics-heading"
+      aria-labelledby="latest-heading"
       className="px-6 sm:px-10 max-w-[88rem] mx-auto pb-20 sm:pb-28 border-t border-[color:var(--hairline)] pt-16 sm:pt-24"
     >
       <h2
-        id="topics-heading"
+        id="latest-heading"
         className="font-mono text-[12px] uppercase tracking-[0.16em] text-[color:var(--ink-muted)] mb-12"
       >
-        What
+        Latest
       </h2>
 
-      <div className="grid gap-x-16 gap-y-16 lg:grid-cols-2">
-        {TOPICS.map((meta) => (
-          <ClusterPanel
-            key={meta.id}
-            name={meta.name}
-            dek={meta.dek}
-            articles={getArticlesByTopic(meta.id, 3)}
-          />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function ClusterPanel({
-  name,
-  dek,
-  articles,
-}: {
-  name: string;
-  dek: string;
-  articles: Article[];
-}) {
-  return (
-    <div>
-      <h3
-        className="
-          font-sans font-medium tracking-[-0.012em]
-          text-[26px] sm:text-[28px] leading-[1.15]
-          text-[color:var(--ink)]
-        "
-      >
-        {name}
-      </h3>
-      <p className="mt-2 text-[16px] sm:text-[17px] leading-[1.5] text-[color:var(--ink-muted)] max-w-[52ch]">
-        {dek}
-      </p>
-
       {articles.length === 0 ? (
-        <p className="mt-6 pt-4 border-t border-[color:var(--hairline)] text-[14px] text-[color:var(--ink-muted)] italic">
-          Nothing published in this topic yet.
+        <p className="text-[14px] text-[color:var(--ink-muted)] italic">
+          Nothing published yet.
         </p>
       ) : (
-        <ul className="mt-6 divide-y divide-[color:var(--hairline)] border-t border-[color:var(--hairline)]">
+        <ul className="divide-y divide-[color:var(--hairline)] border-t border-[color:var(--hairline)] max-w-[72rem]">
           {articles.map((article) => (
             <li key={article.slug}>
               <Link
                 href={article.href}
-                className="grid grid-cols-[1fr_auto] gap-6 items-baseline py-4 group transition-colors duration-150"
+                className="grid grid-cols-[1fr_auto] gap-6 sm:gap-10 items-baseline py-6 sm:py-7 group transition-colors duration-150"
               >
-                <span className="text-[17px] leading-[1.4] transition-colors duration-150 text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)]">
-                  {article.title}
+                <span>
+                  <span className="block font-sans text-[20px] sm:text-[22px] leading-[1.25] tracking-[-0.012em] text-[color:var(--ink)] group-hover:text-[color:var(--brick-deep)] transition-colors duration-150">
+                    {article.title}
+                  </span>
+                  <span className="mt-2 block font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--ink-muted)]">
+                    {topicMeta(article.topic).name}
+                  </span>
                 </span>
                 <time
                   dateTime={article.date}
@@ -299,7 +266,7 @@ function ClusterPanel({
           ))}
         </ul>
       )}
-    </div>
+    </section>
   );
 }
 
