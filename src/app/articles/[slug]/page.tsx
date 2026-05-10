@@ -27,7 +27,7 @@ export async function generateMetadata({
   const article = getArticleBySlug(slug);
   if (!article) return {};
   return {
-    title: `${article.title} · Typecast Data AI`,
+    title: article.title,
     description: article.description,
   };
 }
